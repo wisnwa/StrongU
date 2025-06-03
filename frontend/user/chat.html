@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StrongU</title>
+    <link rel="stylesheet" href="../css/stylehome.css">
+</head>
+<body>
+<div class="wrapper">
+
+<!-- Bagian Atas (Header) -->
+
+    <header id="welcome-header">
+        <!-- Thin Bar -->
+        <div id="thin-bar">
+            <nav class="thin-nav">
+                <a href="home.html">Home</a>
+                <a href="#">Notification</a>
+                <a href="program_taken.html">Program Taken</a>
+                <a href="chat.html">Chat</a>
+                <a href="profile.html">Profile</a>
+            </nav>
+        </div>
+
+        <!-- Main Bar -->
+        <div id="main-bar">
+            <a href="home.html" class="logo-container">
+                <img src="../images/LogoStrongu.png" alt="StrongU Logo" class="logo">
+                <span class="logo-name">StrongU</span>
+            </a>
+        </div>
+    </header>
+
+
+<!-- Bagian Body (Konten Utama) -->
+
+<main id="chat-main">
+    <a href="home.html" class="back-button">Back</a>
+    <h2>Chat</h2>
+
+    <div class="search-chat-container">
+        <input type="text" placeholder="Cari nama trainer">
+        <button class="search-chat-btn">
+            <img src="../images/search-logo.png" alt="Search Icon">
+        </button>
+    </div>
+
+    <div id="chatListContainer">
+      <!-- Contoh trainer chat -->
+
+      <div class="trainer-chat" onclick="openChatbox()" data-trainer="Bobby">
+        <div class="trainer-avatar">
+          <img src="../images/Trainerfoto.png" alt="Profile Picture">
+        </div>
+        <div class="trainer-chat-info">
+          <div class="trainerchat-name">Bobby</div>
+          <div class="last-message">Hey, ready for today's session?</div>
+        </div>
+        <div class="unread-indicator"></div>
+      </div>
+
+    </div>
+  </main>
+<!-- Bagian Bawah (Footer) -->
+    <footer>
+        <p>2025 StrongU. All Rights Reserved.</p>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</div>
+</body>
+</html>

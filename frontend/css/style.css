@@ -1,0 +1,954 @@
+/* === GENERAL SETTINGS === */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Pastikan body mengisi tinggi penuh viewport */
+    display: flex;
+    flex-direction: column;
+    font-family: 'Montserrat', 'Futura'; 
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* WRAPPER (Agar footer tetap di bawah) */
+.wrapper {
+    flex: 1; /* Mengisi sisa ruang antara header dan footer */
+    display: flex;
+    flex-direction: column;
+}
+
+/* === HEADER === */
+#welcome-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(1deg, #0392FB, #025795);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+/* Logo Container */
+.logo-container {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.logo {
+    height: 40px; 
+    width: auto;
+}
+
+.logo-name {
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Navigation Links */
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 24px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-right: 30px;
+}
+
+.nav-links a:hover {
+    background-color: white;
+    color: #343434;
+}
+
+/* === MAIN CONTENT === */
+#welcome-main {
+    flex-grow: 1; /* Akan bertambah jika halaman terlalu pendek */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px 20px;
+    margin-top: 80px; 
+    background-image: url('../images/MainBackground.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    color: #343434;
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left; 
+    margin-left: 40px;  
+}
+
+.text-container h1 {
+    font-size: 72px;
+    margin-bottom: 10px;
+    margin-top: 1px;
+    text-align: left;
+}
+
+.text-container h1 span {
+    color: #0392FB;
+}
+
+.text-container h2 {
+    margin-top: 1px;
+    font-size: 36px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.text-container h3 {
+    margin-top: 1px;
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Get Started Button */
+.button-getstarted {
+    margin-top: 30px;
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #0392FB;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 45px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.button-getstarted:hover {
+    background-color: #025795;
+    color: #ffffff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* === FOOTER === */
+footer {
+    height: 100px;
+    background-color: #343434;
+    color: white;
+    text-align: center;
+    line-height: 100px;
+    font-size: 18px;
+    width: 100%;
+}
+
+/* Main container untuk Sign In */
+#signin-main {
+    flex-grow: 1; /* Akan bertambah jika halaman terlalu pendek */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+    padding: 50px 20px;
+    margin-top: 80px; 
+    background-image: url('../images/MainBackground.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    color: #343434;
+}
+
+/* Kotak login */
+.login-box {
+    background: white;
+    padding: 40px;
+    width: 400px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    justify-content: center;
+}
+
+/* Judul dan teks */
+.login-box h1 {
+    font-size: 30px;
+    text-align: center;
+    color: #343434;
+    margin: 0px;  
+}
+
+.login-box p {
+    text-align: center;
+    color: #343434;
+    margin-bottom: 20px;
+    margin-top: 0px;
+}
+
+/* Input fields */
+.login-box input {
+    width: 94.5%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #0392FB;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Tombol login */
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0392FB;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.login-button:hover {
+    background-color: #025795;
+}
+
+/* Text Sign up */
+.signup-text {
+    text-align: center;
+    margin-top: 15px;
+    color: #343434;
+}
+
+.signup-text a {
+    margin-top: 15px;
+    color: #0392FB;
+    text-decoration: none;
+}
+
+.signup-text a:hover {
+    text-decoration: underline;
+}
+
+/* Tombol Back (di pojok kiri bawah) */
+.back-button {
+    bottom: 15px;
+    left: 15px;
+    font-size: 14px;
+    color: #0392FB;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #0392FB;
+}
+
+.back-button:hover {
+    background-color: #0392FB;
+    color: white;
+}
+
+#signup-main {
+    flex-grow: 1; /* Akan bertambah jika halaman terlalu pendek */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+    padding: 50px 20px;
+    margin-top: 80px; 
+    background-image: url('../images/MainBackground.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    color: #343434;
+    display: flex;
+}
+
+/* Kotak Sign up */
+.signup-box {
+    background: white;
+    padding: 40px;
+    width: 400px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    justify-content: center;
+}
+
+/* Judul dan teks */
+.signup-box h1 {
+    font-size: 30px;
+    text-align: center;
+    color: #343434;
+    margin: 0px;  
+}
+
+.signup-box p {
+    text-align: center;
+    color: #343434;
+    margin-bottom: 20px;
+    margin-top: 0px;
+}
+
+/* Input fields */
+.signup-box input {
+    width: 94.5%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #0392FB;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Text Sign up */
+.signin-text {
+    text-align: center;
+    margin-top: 15px;
+    color: #343434;
+}
+
+.signin-text a {
+    margin-top: 15px;
+    color: #0392FB;
+    text-decoration: none;
+}
+
+.signin-text a:hover {
+    text-decoration: underline;
+}
+
+/* Tombol Sign up */
+.signup-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0392FB;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.signup-button:hover {
+    background-color: #025795;
+}
+
+.error-text {
+    display: block;
+    color: red;
+    font-size: 14px;
+    margin-top: 4px;
+    margin-bottom: 10px;
+}
+
+.popup-box {
+    border-radius: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    background-color: white;
+    border: 2px solid #0392FB;
+    padding: 20px;
+    z-index: 1000;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    display: none;
+}
+
+.popup-box button {
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #0392FB;
+    color: white;
+    border: none;
+}
+
+#zipcode-main {
+    flex-grow: 1; /* Akan bertambah jika halaman terlalu pendek */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+    padding: 50px 20px;
+    margin-top: 80px; 
+    background-image: url('../images/MainBackground.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    color: #343434;
+}
+
+/* Kotak zipcode */
+.zipcode-box {
+    background: white;
+    padding: 40px;
+    width: 400px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    justify-content: center;
+}
+
+/* Judul dan teks */
+.zipcode-box h1 {
+    font-size: 30px;
+    text-align: center;
+    color: #343434;
+    margin-bottom: 15px; 
+}
+
+.zipcode-box h1 span{
+    color: #0392FB;
+}
+
+/* Input fields */
+.zipcode-box input {
+    width: 94.5%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #0392FB;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Tombol zipcode */
+.zipcode-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0392FB;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.zipcode-button:hover {
+    background-color: #025795;
+}
+
+#birthday-main {
+    flex-grow: 1; /* Akan bertambah jika halaman terlalu pendek */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+    padding: 50px 20px;
+    margin-top: 80px; 
+    background-image: url('../images/MainBackground.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    color: #343434;
+}
+
+/* Kotak birthday */
+.birthday-box {
+    background: white;
+    padding: 40px;
+    width: 400px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    justify-content: center;
+}
+
+/* Judul dan teks */
+.birthday-box h1 {
+    font-size: 30px;
+    text-align: center;
+    color: #343434;
+    margin-bottom: 15px; 
+}
+
+.birthday-box h1 span{
+    color: #0392FB;
+}
+
+/* Input fields */
+.birthday-box input {
+    width: 94.5%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #0392FB;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Tombol birthday */
+.birthday-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0392FB;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.birthday-button:hover {
+    background-color: #025795;
+}
+
+
+#session-main {
+    flex-grow: 1; /* Akan bertambah jika halaman terlalu pendek */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+    padding: 50px 20px;
+    margin-top: 80px; 
+    background-image: url('../images/MainBackground.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    color: #343434;
+}
+
+/* Kotak session */
+.session-box {
+    background: white;
+    padding: 40px;
+    width: 400px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    justify-content: center;
+}
+
+/* Judul dan teks */
+.session-box h1 {
+    font-size: 30px;
+    text-align: center;
+    color: #343434;
+    margin-bottom: 15px; 
+}
+
+.session-box h1 span {
+    color: #0392FB;
+}
+
+/* Kotak pilihan sesi */
+.session-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3px;
+    border: 1px solid #0392FB;
+    border-radius: 5px;
+    margin: 10px 0;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.session-option.selected {
+    background-color: #50BDF5;
+    border: 1px solid #50BDF5;
+}
+
+.session-option.selected label,
+.session-option.selected .session-time {
+    color: white;
+}
+
+/* Label dan checkbox */
+.session-option label {
+    font-size: 18px;
+    color: #343434;
+    text-align: center;
+    display: block;
+    margin: 0px
+}
+
+.session-option input[type="checkbox"] {
+    display: none;
+}
+
+/* Teks jam */
+.session-time {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* Tombol submit */
+.session-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0392FB;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.session-button:hover {
+    background-color: #025795;
+}
+
+#day-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+    padding: 50px 20px;
+    margin-top: 80px;
+    background-image: url('../images/MainBackground.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #343434;
+}
+
+/* Kotak day */
+.day-box {
+    background: white;
+    padding: 40px;
+    width: 450px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    padding-bottom: 50px;
+}
+
+/* Judul */
+.day-box h1 {
+    font-size: 28px;
+    color: #343434;
+    margin-bottom: 15px;
+}
+
+.day-box h1 span {
+    color: #0392FB;
+}
+
+/* Container dua kolom */
+.day-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Kolom kiri & kanan */
+.day-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 48%;
+}
+
+/* Kotak hari */
+.day-option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #0392FB;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.day-option.selected {
+    background-color: #50BDF5;
+    border: 1px solid #50BDF5;
+}
+
+.day-option.selected label {
+    color: white;
+}
+
+/* Label & Checkbox */
+.day-option label {
+    font-size: 18px;
+    color: #343434;
+    text-align: center;
+    display: block;
+}
+
+.day-option input[type="checkbox"] {
+    display: none;
+}
+
+/* Sunday di tengah */
+.sunday {
+    margin: 15px auto 0 auto;
+    width: 60%;
+}
+
+/* Tombol Submit */
+.day-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0392FB;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.day-button:hover {
+    background-color: #025795;
+}
+
+/* Tombol Back (di pojok kiri bawah) */
+.back-button-day {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    font-size: 14px;
+    color: #0392FB;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #0392FB;
+    margin-left: 25px;
+}
+
+.back-button-day:hover {
+    background-color: #0392FB;
+    color: white;
+}
+
+/* Layout utama */
+#goal-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    margin-top: 80px;
+    background-image: url('../images/MainBackground.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #343434;
+}
+
+/* Kotak utama */
+.goal-box {
+    background: white;
+    padding: 40px;
+    width: 450px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    padding-bottom: 50px;
+}
+
+/* Judul */
+.goal-box h1 {
+    font-size: 28px;
+    color: #343434;
+    margin-bottom: 15px;
+}
+
+.goal-box h1 span {
+    color: #0392FB;
+}
+
+/* Container dua kolom */
+.goal-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Kolom kiri & kanan */
+.goal-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 48%;
+}
+
+/* Kotak pilihan goal */
+.goal-option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #0392FB;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.goal-option.selected {
+    background-color: #50BDF5;
+    border: 1px solid #50BDF5;
+}
+
+.goal-option.selected label {
+    color: white;
+}
+
+/* Label & Checkbox */
+.goal-option label {
+    font-size: 16px;
+    color: #343434;
+    text-align: center;
+    display: block;
+}
+
+.goal-option input[type="checkbox"] {
+    display: none;
+}
+
+/* Tombol Submit */
+.goal-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0392FB;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.goal-button:hover {
+    background-color: #025795;
+}
+
+/* Tombol Back (di pojok kiri bawah) */
+.back-button-goal {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    font-size: 14px;
+    color: #0392FB;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #0392FB;
+    margin-left: 25px;
+}
+
+.back-button-goal:hover {
+    background-color: #0392FB;
+    color: white;
+}
+
+/* Style untuk level main */
+#level-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+    padding: 50px 20px;
+    margin-top: 80px; 
+    background-image: url('../images/MainBackground.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    color: #343434;
+}
+
+/* Kotak level */
+.level-box {
+    background: white;
+    padding: 40px;
+    width: 400px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    justify-content: center;
+}
+
+/* Judul */
+.level-box h1 {
+    font-size: 30px;
+    text-align: center;
+    color: #343434;
+    margin-bottom: 15px; 
+}
+
+.level-box h1 span {
+    color: #0392FB;
+}
+
+/* Opsi level */
+.level-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3px;
+    border: 1px solid #0392FB;
+    border-radius: 5px;
+    margin: 10px 0;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.level-option.selected {
+    background-color: #50BDF5;
+    border: 1px solid #50BDF5;
+}
+
+.level-option.selected label,
+.level-option.selected .level-time {
+    color: white;
+}
+
+/* Label */
+.level-option label {
+    font-size: 18px;
+    color: #343434;
+    text-align: center;
+    display: block;
+    margin: 0px
+}
+
+.level-option input[type="radio"] {
+    display: none;
+}
+
+/* Deskripsi pengalaman */
+.level-time {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* Tombol submit */
+.level-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0392FB;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.level-button:hover {
+    background-color: #025795;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StrongU</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="wrapper">
+<!-- Bagian Atas (Header) -->
+    <header id="welcome-header">
+        <div class="logo-container">
+            <img src="../images/LogoStrongu.png" alt="StrongU Logo" class="logo">
+            <span class="logo-name">StrongU</span>
+        </div>
+        <nav class="nav-links">   
+            <a href="signin.html">Sign In</a>
+        </nav>
+    </header>
+
+<!-- Bagian Body (Konten Utama) -->
+    <main id="signup-main">
+        <div class="signup-box">
+            <h1>Sign up</h1>
+            <p>Please create account to continue</p>
+            <form id="signup-form" method="POST">
+                <input type="text" name="username" id="username" placeholder="Username" required>
+                <input type="text" name="email" id="email" placeholder="Email" required>
+                <span id="email-error" class="error-text"></span>
+                <input type="text" name="phone" id="phone" placeholder="Phone number" required>
+                <span id="phone-error" class="error-text"></span>
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <button type="submit" class="signup-button">Sign up</button>
+            </form>
+            <p class="signin-text">Already have account? <a href="signin.html">Login</a></p>
+            <a href="welcome.html" class="back-button">Back</a>
+        </div>
+
+        <!-- Success Popup -->
+        <div id="success-popup" class="popup-box">
+            <p>Akun berhasil dibuat!</p>
+            <button onclick="window.location.href='signin.html'">Lanjut Sign In</button>
+        </div>
+
+    </main> 
+
+<!-- Bagian Bawah (Footer) -->
+    <footer>
+        <p>2025 StrongU. All Rights Reserved.</p>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</div>
+</body>
+</html>

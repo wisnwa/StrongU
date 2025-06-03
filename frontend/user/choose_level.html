@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StrongU</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="wrapper">
+<!-- Bagian Atas (Header) -->
+    <header id="welcome-header">
+        <div class="logo-container">
+            <img src="../images/LogoStrongu.png" alt="StrongU Logo" class="logo">
+            <span class="logo-name">StrongU</span>
+        </div>
+        <nav class="nav-links">   
+            <a href="signin.html">Sign In</a>
+        </nav>
+    </header>
+
+<!-- Bagian Body (Konten Utama) -->
+<main id="level-main">
+    <div class="level-box">
+        <h1>Choose your <span>Level</span>!</h1>
+        <form id="level-form">
+            <div class="level-option" data-value="beginner">
+                <label>
+                    <input type="radio" name="level" value="beginner">
+                    <span>Beginner</span>
+                </label>
+                <p class="level-time">0-1 Year Experience</p>
+            </div>
+
+            <div class="level-option" data-value="intermediate">
+                <label>
+                    <input type="radio" name="level" value="intermediate">
+                    <span>Intermediate</span>
+                </label>
+                <p class="level-time">1-3 Years Experience</p>
+            </div>
+
+            <div class="level-option" data-value="expert">
+                <label>
+                    <input type="radio" name="level" value="expert">
+                    <span>Expert</span>
+                </label>
+                <p class="level-time">3+ Years Experience</p>
+            </div>
+
+            <button type="submit" class="level-button">Submit</button>
+        </form>
+        <a href="choose_goal.html" class="back-button">Back</a>
+    </div>
+</main>
+
+
+<!-- Bagian Bawah (Footer) -->
+    <footer>
+        <p>2025 StrongU. All Rights Reserved.</p>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</div>
+</body>
+</html>

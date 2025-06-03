@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StrongU</title>
+    <link rel="stylesheet" href="../css/stylehome.css">
+</head>
+<body>
+<div class="wrapper">
+
+<!-- Bagian Atas (Header) -->
+
+    <header id="welcome-header">
+        <!-- Thin Bar -->
+        <div id="thin-bar">
+            <nav class="thin-nav">
+                <a href="home.html">Home</a>
+                <a href="#">Notification</a>
+                <a href="program_taken">Program Taken</a>
+                <a href="chat.html">Chat</a>
+                <a href="profile.html">Profile</a>
+            </nav>
+        </div>
+
+        <!-- Main Bar -->
+        <div id="main-bar">
+            <a href="home.html" class="logo-container">
+                <img src="../images/LogoStrongu.png" alt="StrongU Logo" class="logo">
+                <span class="logo-name">StrongU</span>
+            </a>
+        </div>
+    </header>
+
+<!-- Bagian Body (Konten Utama) -->
+
+<!-- Main Content -->
+    <main id="profile-main">
+    <div class="profile-container">
+        <!-- Bagian Kiri: Profil Trainer -->
+        <div class="left-profile">
+        <a href="home.html" class="back-button">Back</a>
+        <div class="account-container">
+            <div class="profile-img-box">
+            <img src="../images/profile-pict.png" alt="User Photo" class="profile-img" id="sidebar-profile-img">
+            </div>
+            <div class="profile-info-box">
+            <div class="profile-name" id="sidebar-username">Loading...</div>
+            <div class="account-info">
+                <div class="email" id="sidebar-email">Loading...</div>
+                <div class="phone" id="sidebar-phone">Loading...</div>
+            </div>
+            </div>
+        </div>
+        
+        <div class="profile-infopage">
+            <div class="profile-tabs">
+            <button class="tab-button-profile active" data-tab="edit-profile">Edit Profile</button>
+            <button class="tab-button-profile" data-tab="saved-profile">Saved Programs</button>
+            <button class="tab-button-profile" data-tab="setting-profile">Setting</button>
+            <button class="tab-button-profile" data-tab="logout-profile">Log Out</button>
+            </div>
+        </div>
+        </div>
+
+        <!-- Bagian Kanan: Konten Dinamis -->
+        <div class="profile-content" id="profile-content">
+        <!-- Edit Profile Form -->
+        <div class="tab-content active" id="edit-profile">
+            <h2>Edit Profile</h2>
+            <form id="editProfileForm">
+            <div class="profile-section">
+                <div class="edit-profile-img">
+                <img src="../images/profile-pict.png" alt="Profile Photo" id="edit-profile-picture">
+                <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
+                <button type="button" id="changePictureBtn" class="change-pict-text">Change Picture</button>
+                </div>
+                
+                <!-- Username -->
+                <div class="edit-profile-name-box">
+                <div class="edit-name-label">
+                    <span id="profile-name-text">Loading...</span>
+                </div>
+                <input type="text" id="profile-name-input" style="display: none;">
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group editable-container">
+            <label>Email</label>
+            <div class="editable-field">
+                <span id="email-view" class="view-mode">Loading...</span>
+                <input type="email" id="email" class="edit-mode" style="display: none;">
+            </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group editable-container">
+            <label>Phone Number</label>
+            <div class="editable-field">
+                <span id="phone-view" class="view-mode">Loading...</span>
+                <input type="text" id="phone" class="edit-mode" style="display: none;">
+            </div>
+            </div>
+
+            <!-- Birthday -->
+            <div class="form-group editable-container">
+            <label>Birthday</label>
+            <div class="editable-field">
+                <span id="birthday-view" class="view-mode">Loading...</span>
+                <input type="date" id="birthday" class="edit-mode" style="display: none;">
+            </div>
+            </div>
+
+            <!-- Zipcode -->
+            <div class="form-group editable-container">
+            <label>Zipcode</label>
+            <div class="editable-field">
+                <span id="zipcode-view" class="view-mode">Loading...</span>
+                <input type="text" id="zipcode" class="edit-mode" style="display: none;">
+            </div>
+            </div>
+            
+            <!-- Session -->
+            <div class="form-group">
+                <label>Session</label>
+                <div class="checkbox-group">
+                <label><input type="checkbox" name="session" value="1"> Morning</label>
+                <label><input type="checkbox" name="session" value="2"> Afternoon</label>
+                <label><input type="checkbox" name="session" value="3"> Evening</label>
+                </div>
+            </div>
+            
+            <!-- Day -->
+            <div class="form-group">
+                <label>Day</label>
+                <div class="checkbox-group">
+                <label><input type="checkbox" name="day" value="2"> Monday</label>
+                <label><input type="checkbox" name="day" value="3"> Tuesday</label>
+                <label><input type="checkbox" name="day" value="4"> Wednesday</label>
+                <label><input type="checkbox" name="day" value="5"> Thursday</label>
+                <label><input type="checkbox" name="day" value="6"> Friday</label>
+                <label><input type="checkbox" name="day" value="7"> Saturday</label>
+                <label><input type="checkbox" name="day" value="1"> Sunday</label>
+                </div>
+            </div>
+            
+            <!-- Goals -->
+            <div class="form-group">
+                <label>Goals</label>
+                <div class="checkbox-group">
+                <label><input type="checkbox" name="goal" value="1"> Weight Loss</label>
+                <label><input type="checkbox" name="goal" value="2"> Firming & Toning</label>
+                <label><input type="checkbox" name="goal" value="3"> Increase Muscle</label>
+                <label><input type="checkbox" name="goal" value="4"> Strength</label>
+                <label><input type="checkbox" name="goal" value="5"> Endurance Training</label>
+                <label><input type="checkbox" name="goal" value="6"> Weight Gain</label>
+                <label><input type="checkbox" name="goal" value="7"> Flexibility</label>
+                <label><input type="checkbox" name="goal" value="8"> Aerobic fitness</label>
+                <label><input type="checkbox" name="goal" value="9"> Body Building</label>
+                </div>
+            </div>
+            
+            <!-- Level -->
+            <div class="form-group">
+                <label>Level</label>
+                <div class="radio-group">
+                <label><input type="radio" name="level" value="beginner"> Beginner</label>
+                <label><input type="radio" name="level" value="intermediate"> Intermediate</label>
+                <label><input type="radio" name="level" value="advanced"> Advanced</label>
+                </div>
+            </div>
+            
+            <!-- Save -->
+            <button type="button" id="save-profile-btn">Save</button>
+            </form>
+        </div>
+        
+        <!-- Saved Programs (Placeholder) -->
+        <div class="tab-content" id="saved-profile">
+            <h2>Saved Programs</h2>
+            <p>This feature is not yet implemented.</p>
+        </div>
+        
+        <!-- Settings (Placeholder) -->
+        <div class="tab-content" id="setting-profile">
+            <h2>Settings</h2>
+            <p>This feature is not yet implemented.</p>
+        </div>
+        </div>
+    </div>
+    </main>
+    
+<!-- Bagian Bawah (Footer) -->
+    <footer>
+        <p>2025 StrongU. All Rights Reserved.</p>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</div>
+</body>
+</html>

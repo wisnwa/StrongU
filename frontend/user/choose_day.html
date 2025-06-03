@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StrongU</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="wrapper">
+<!-- Bagian Atas (Header) -->
+    <header id="welcome-header">
+        <div class="logo-container">
+            <img src="../images/LogoStrongu.png" alt="StrongU Logo" class="logo">
+            <span class="logo-name">StrongU</span>
+        </div>
+        <nav class="nav-links">   
+            <a href="signin.html">Sign In</a>
+        </nav>
+    </header>
+
+<!-- Bagian Body (Konten Utama) -->
+<main id="day-main">
+    <div class="day-box">
+        <h1>Choose your <span>Days</span>!</h1>
+        <form id="day-form">
+            <div class="day-container">
+                <div class="day-column">
+                    <div class="day-option" data-value="monday">
+                        <label>
+                            <input type="checkbox" name="day" value="monday">
+                            <span>Monday</span>
+                        </label>
+                    </div>
+                    <div class="day-option" data-value="wednesday">
+                        <label>
+                            <input type="checkbox" name="day" value="wednesday">
+                            <span>Wednesday</span>
+                        </label>
+                    </div>
+                    <div class="day-option" data-value="friday">
+                        <label>
+                            <input type="checkbox" name="day" value="friday">
+                            <span>Friday</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="day-column">
+                    <div class="day-option" data-value="tuesday">
+                        <label>
+                            <input type="checkbox" name="day" value="tuesday">
+                            <span>Tuesday</span>
+                        </label>
+                    </div>
+                    <div class="day-option" data-value="thursday">
+                        <label>
+                            <input type="checkbox" name="day" value="thursday">
+                            <span>Thursday</span>
+                        </label>
+                    </div>
+                    <div class="day-option" data-value="saturday">
+                        <label>
+                            <input type="checkbox" name="day" value="saturday">
+                            <span>Saturday</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sunday di tengah bawah -->
+            <div class="day-option sunday" data-value="sunday">
+                <label>
+                    <input type="checkbox" name="day" value="sunday">
+                    <span>Sunday</span>
+                </label>
+            </div>
+
+            <button type="submit" class="day-button">Submit</button>
+        </form>
+        <a href="choose_session.html" class="back-button-day">Back</a>
+    </div>
+</main>
+
+<!-- Bagian Bawah (Footer) -->
+    <footer>
+        <p>2025 StrongU. All Rights Reserved.</p>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</div>
+</body>
+</html>
