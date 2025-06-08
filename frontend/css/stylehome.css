@@ -187,7 +187,7 @@ footer {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 50%; /* Gradient dari bawah hingga setengah tinggi card */
+    height: 70%; /* Gradient dari bawah hingga setengah tinggi card */
     background: linear-gradient(to top, rgba(0, 102, 255, 0.8), rgba(0, 102, 255, 0) 100%);
     pointer-events: none; /* Agar tidak menghalangi klik */
 }
@@ -1073,9 +1073,6 @@ background-color: #025795;
 }
 
 /* Styling untuk Trainer Settings Tab */
-#trainer-setting {
-    display: none; /* Awalnya disembunyikan, JS yang akan menampilkan */
-}
 
 .form-group-trainer {
     margin-bottom: 25px;

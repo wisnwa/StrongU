@@ -2,6 +2,8 @@
 session_start();
 require "db.php";
 
+header('Content-Type: application/json');
+
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode(["error" => "Unauthorized"]);
@@ -10,8 +12,8 @@ if (!isset($_SESSION['user_id'])) {
 
 $userID = $_SESSION['user_id'];
 
-// Ambil kolom profile_pict
-$sqlUser = "SELECT username, email, noTelp, birthday, zipcode, level, profile_pict FROM users WHERE userID = ?";
+// REVISI DI SINI: Tambahkan 'role' ke dalam query SELECT
+$sqlUser = "SELECT username, email, noTelp, birthday, zipcode, level, role, profile_pict FROM users WHERE userID = ?";
 $stmt = $conn->prepare($sqlUser);
 $stmt->bind_param("i", $userID);
 $stmt->execute();
@@ -25,25 +27,23 @@ if (!$userData) {
 
 // Tambahkan path lengkap untuk gambar jika ada
 if (!empty($userData['profile_pict'])) {
-    // Sesuaikan path jika direktori proyek Anda berbeda
     $userData['profile_pict_url'] = 'http://localhost/StrongU_Project/backend/' . $userData['profile_pict'];
 } else {
-    // Path ke gambar default jika tidak ada foto profil
     $userData['profile_pict_url'] = 'http://localhost/StrongU_Project/frontend/images/profile-pict.png';
 }
 
-
 function getUserRelations($conn, $table, $userID) {
-    $colName = "id_" . substr($table, 5); // e.g., id_session
+    $colName = "id_" . substr($table, 5);
     $query = "SELECT $colName AS id FROM $table WHERE id_user = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $userID);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $stmt_rel = $conn->prepare($query);
+    $stmt_rel->bind_param("i", $userID);
+    $stmt_rel->execute();
+    $result_rel = $stmt_rel->get_result();
     $ids = [];
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $result_rel->fetch_assoc()) {
         $ids[] = $row['id'];
     }
+    $stmt_rel->close();
     return $ids;
 }
 
