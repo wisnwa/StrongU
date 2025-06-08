@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // ============ FORM: SIGN IN ============
+// ============ FORM: SIGN IN ============
     const signinForm = document.getElementById("signin-form");
     if (signinForm) {
         const usernameError = document.getElementById("username-error");
@@ -19,19 +19,36 @@ document.addEventListener("DOMContentLoaded", function () {
             formData.append("username", username);
             formData.append("password", password);
 
-            fetch("http://localhost/StrongU_Project/backend/signin.php", {
+            fetch("http://localhost/StrongU_Project/backend/signin.php", { // Pastikan URL ini benar
                 method: "POST",
                 body: formData
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) { // Periksa apakah respons HTTP tidak sukses (misal: 404, 500)
+                    return res.json().then(errData => {
+                        throw new Error(errData.message || "Network response was not ok");
+                    });
+                }
+                return res.json();
+            })
             .then(data => {
                 if (data.status === "success") {
                     if (usernameError) usernameError.textContent = "";
                     if (passwordError) passwordError.textContent = "";
+
                     if (data.role === "admin") {
                         window.location.href = "../admin/dashboard.html";
+                    } else if (data.role === "user") {
+                        // Logika baru berdasarkan kolom 'level'
+                        if (data.level !== null && data.level !== undefined && data.level !== '') {
+                            window.location.href = "home.html"; // Jika level ada, ke home.html
+                        } else {
+                            window.location.href = "enter_zipcode.html"; // Jika level null, ke enter_zipcode.html
+                        }
                     } else {
-                        window.location.href = "enter_zipcode.html";
+                        // Handle role lain jika ada, atau default redirect
+                        alert("Role tidak dikenali. Mengarahkan ke halaman utama.");
+                        window.location.href = "welcome.html"; // Atau halaman default lainnya
                     }
                 } else if (data.field === "username") {
                     if (usernameError) usernameError.textContent = data.message;
@@ -40,12 +57,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (passwordError) passwordError.textContent = data.message;
                     if (usernameError) usernameError.textContent = "";
                 } else {
-                    alert("Terjadi kesalahan: " + data.message);
+                    // Menampilkan pesan error umum dari server jika ada
+                    alert("Terjadi kesalahan: " + (data.message || "Respons tidak diketahui"));
                 }
             })
             .catch(err => {
                 console.error("Fetch error:", err);
-                alert("Terjadi kesalahan jaringan.");
+                alert("Terjadi kesalahan jaringan atau server: " + err.message);
             });
         });
     }
@@ -54,6 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const signupForm = document.getElementById("signup-form");
     if (signupForm) {
         const successPopup = document.getElementById("success-popup");
+        const emailInput = document.getElementById("email"); // Ambil elemen input email
         const emailError = document.getElementById("email-error");
         const phoneError = document.getElementById("phone-error");
 
@@ -62,37 +81,58 @@ document.addEventListener("DOMContentLoaded", function () {
         if (phoneError) phoneError.textContent = "";
 
         signupForm.addEventListener("submit", function(event) {
-            event.preventDefault();
+            event.preventDefault(); // Selalu cegah submit default dulu
+
+            const emailValue = emailInput.value.trim(); // Ambil nilai email
+
+            // Validasi email harus diakhiri dengan @gmail.com
+            if (!emailValue.endsWith("@gmail.com")) {
+                if (emailError) emailError.textContent = "Email harus menggunakan domain @gmail.com";
+                return; // Hentikan proses jika email tidak valid
+            } else {
+                if (emailError) emailError.textContent = ""; // Kosongkan error jika valid
+            }
 
             const formData = new FormData(signupForm);
 
-            for (let [key, value] of formData.entries()) {
-                console.log(key, "=", value);
-            }
+            // Anda bisa menghapus loop console.log ini jika sudah tidak diperlukan untuk debugging
+            // for (let [key, value] of formData.entries()) {
+            //     console.log(key, "=", value);
+            // }
 
-            fetch("http://localhost/StrongU_Project/backend/signup.php", {
+            fetch("http://localhost/StrongU_Project/backend/signup.php", { // Pastikan URL ini benar
                 method: "POST",
                 body: formData,
-                credentials: 'same-origin'
+                credentials: 'same-origin' // Pastikan Anda memahami implikasi credentials
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(errData => {
+                        throw new Error(errData.message || "Network response was not ok");
+                    });
+                }
+                return res.json();
+            })
             .then(data => {
                 console.log("Server response:", data);
                 if (data.status === "success") {
                     alert("Berhasil daftar!");
                     signupForm.reset();
+                    if (emailError) emailError.textContent = ""; // Pastikan error dikosongkan
+                    if (phoneError) phoneError.textContent = ""; // Pastikan error dikosongkan
                     if (successPopup) successPopup.style.display = "block";
                 } else if (data.field === "email") {
                     if (emailError) emailError.textContent = data.message;
                 } else if (data.field === "phone") {
                     if (phoneError) phoneError.textContent = data.message;
                 } else {
-                    alert("Error: " + data.message);
+                    // Menampilkan pesan error umum dari server jika ada dan belum ditangani spesifik
+                    alert("Error: " + (data.message || "Terjadi kesalahan saat pendaftaran."));
                 }
             })
             .catch(err => {
                 console.error("Fetch error:", err);
-                alert("Terjadi kesalahan jaringan.");
+                alert("Terjadi kesalahan jaringan atau server: " + err.message);
             });
         });
     }
@@ -452,188 +492,272 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ============ PROFILE ============
-    // Ambil semua referensi elemen HTML
-    const emailInput = document.getElementById("email");
-    const phoneInput = document.getElementById("phone");
-    const birthdayInput = document.getElementById("birthday");
-    const zipcodeInput = document.getElementById("zipcode");
-    const levelInputs = document.querySelectorAll('input[name="level"]');
-    const sessionCheckboxes = document.querySelectorAll('input[name="session"]');
-    const dayCheckboxes = document.querySelectorAll('input[name="day"]');
-    const goalCheckboxes = document.querySelectorAll('input[name="goal"]');
-    const saveBtn = document.getElementById("save-profile-btn");
+    // ============ PROFILE PAGE ============
+    const profileMain = document.getElementById("profile-main");
+    if (profileMain) {
 
-    // Elemen UI untuk menampilkan data
-    const sidebarUsername = document.getElementById("sidebar-username");
-    const sidebarEmail = document.getElementById("sidebar-email");
-    const sidebarPhone = document.getElementById("sidebar-phone");
-    const profileNameText = document.getElementById("profile-name-text");
+        // =================================================
+        // BAGIAN 1: DEKLARASI SEMUA ELEMEN (VARIABEL)
+        // =================================================
 
-    // Input fields untuk mode edit
-    const profileNameInput = document.getElementById("profile-name-input");
-    const emailView = document.getElementById("email-view") || document.createElement("span");
-    const phoneView = document.getElementById("phone-view") || document.createElement("span");
-    const birthdayView = document.getElementById("birthday-view") || document.createElement("span");
-    const zipcodeView = document.getElementById("zipcode-view") || document.createElement("span");
+        // --- Form dan Tombol Utama ---
+        const editProfileForm = document.getElementById("editProfileForm");
+        const saveBtn = document.getElementById("save-profile-btn");
 
-    // Fungsi: Aktifkan mode edit saat klik pada teks
-    function enableEditMode(elementView, elementInput, currentValue) {
-    elementView.addEventListener("click", () => {
-        elementView.style.display = "none";
-        elementInput.style.display = "inline-block";
-        elementInput.value = currentValue;
-        elementInput.focus();
+        // --- Gambar ---
+        const changePictureBtn = document.getElementById("changePictureBtn");
+        const deletePictureBtn = document.getElementById("deletePictureBtn");
+        const profilePictureInput = document.getElementById("profile-picture-input");
+        const sidebarProfileImg = document.getElementById("sidebar-profile-img");
+        const editProfilePicture = document.getElementById("edit-profile-picture");
+        const defaultProfilePic = '../images/profile-pict.png'; // Ganti jika path default Anda berbeda
 
-        // Keluar dari mode edit saat input blur
-        elementInput.addEventListener("blur", () => {
-        const newValue = elementInput.value.trim();
-        if (newValue !== "") {
-            elementView.textContent = newValue;
-            elementView.style.display = "inline-block";
-            elementInput.style.display = "none";
-        }
-        });
+        // --- Mode Lihat & Edit (Text Fields) ---
+        const usernameView = document.getElementById("username-view"), usernameInput = document.getElementById("username");
+        const emailView = document.getElementById("email-view"), emailInput = document.getElementById("email");
+        const phoneView = document.getElementById("phone-view"), phoneInput = document.getElementById("noTelp");
+        const birthdayView = document.getElementById("birthday-view"), birthdayInput = document.getElementById("birthday");
+        const zipcodeView = document.getElementById("zipcode-view"), zipcodeInput = document.getElementById("zipcode");
 
-        // Juga keluar saat tekan Enter
-        elementInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-            elementInput.blur();
-        }
-        });
-    });
-    }
+        // --- Navigasi Tab ---
+        const tabButtons = document.querySelectorAll(".tab-button-profile");
+        const tabContents = document.querySelectorAll(".tab-content");
+        const trainerSettingTab = document.getElementById("trainer-setting-tab");
 
-    // Aktifkan mode edit untuk masing-masing field
-    enableEditMode(profileNameText, profileNameInput, profileNameText.textContent);
-    enableEditMode(emailView, emailInput, emailInput.value);
-    enableEditMode(phoneView, phoneInput, phoneInput.value);
-    enableEditMode(birthdayView, birthdayInput, birthdayInput.value);
-    enableEditMode(zipcodeView, zipcodeInput, zipcodeInput.value);
+        // =================================================
+        // BAGIAN 2: DEKLARASI SEMUA FUNGSI
+        // =================================================
 
-    // Fetch profil dari API
-    fetch("http://localhost/StrongU_Project/backend/get_profile.php")
-    .then((res) => res.json())
-    .then((data) => {
-        // Update elemen UI
-        sidebarUsername.textContent = data.username;
-        profileNameText.textContent = data.username;
-        sidebarEmail.textContent = data.email;
-        sidebarPhone.textContent = data.noTelp;
-        emailView.textContent = data.email;
-        phoneView.textContent = data.noTelp;
-        birthdayView.textContent = data.birthday;
-        zipcodeView.textContent = data.zipcode;
-
-
-        // Update input form
-        emailInput.value = data.email;
-        phoneInput.value = data.noTelp;
-        birthdayInput.value = data.birthday;
-        zipcodeInput.value = data.zipcode;
-
-        // Update radio button
-        levelInputs.forEach((radio) => {
-        if (radio.value.toLowerCase() === data.level?.toLowerCase()) {
-            radio.checked = true;
-        }
-        });
-
-        // Fungsi centang checkbox
-        const checkList = (dataArr, inputList) => {
-        inputList.forEach((input) => {
-            const value = parseInt(input.value);
-            if (!isNaN(value) && dataArr.includes(value)) {
-            input.checked = true;
-            }
-        });
-        };
-
-        checkList(data.session, sessionCheckboxes);
-        checkList(data.day, dayCheckboxes);
-        checkList(data.goal, goalCheckboxes);
-    })
-    .catch((error) => console.error("Error fetching profile:", error));
-
-    // Event listener untuk tombol Save
-    saveBtn.addEventListener("click", function () {
-    const level = Array.from(levelInputs).find((r) => r.checked)?.value;
-    if (!level) return alert("Please select a level.");
-
-    const getCheckedValues = (name) =>
-        Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map((cb) =>
-        parseInt(cb.value)
-        );
-
-    const updatedData = {
-        username: profileNameText.textContent,
-        email: emailInput.value.trim(),
-        noTelp: phoneInput.value.trim(),
-        birthday: birthdayInput.value,
-        zipcode: zipcodeInput.value.trim(),
-        level: level,
-        session: getCheckedValues("session"),
-        day: getCheckedValues("day"),
-        goal: getCheckedValues("goal"),
-    };
-
-    if (!/^\d{5}$/.test(updatedData.zipcode)) {
-        alert("Zipcode harus 5 digit angka.");
-        return;
-    }
-
-    fetch("http://localhost/StrongU_Project/backend/update_profile.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedData),
-    })
-        .then((res) => res.json())
-        .then((res) => {
-        if (res.success) {
-            alert("Profile berhasil diperbarui.");
-
-            // Update juga tampilan UI setelah update
-            sidebarUsername.textContent = updatedData.username;
-            profileNameText.textContent = updatedData.username;
-            sidebarEmail.textContent = updatedData.email;
-            sidebarPhone.textContent = updatedData.noTelp;
-        } else {
-            alert(res.error || "Gagal update profile.");
-        }
-        })
-        .catch((error) => console.error("Error updating profile:", error));
-    });
-
-    // Tombol navigasi
-    document.querySelector("[data-tab='saved-profile']").addEventListener("click", () => {
-    window.location.href = "program_taken.html";
-    });
-    document.querySelector("[data-tab='logout-profile']").addEventListener("click", () => {
-    window.location.href = "signin.html";
-    });
-    
-    // ============ CHATBOX ============
-    const trainerChats = document.querySelectorAll(".trainer-chat");
-    const searchChatInput = document.getElementById("searchChatInput");
-
-    trainerChats.forEach(chat => {
-        const hasUnread = true;
-        if (hasUnread) {
-            chat.querySelector(".unread-indicator").style.display = "block";
-        }
-    });
-
-    if (searchChatInput) {
-        searchChatInput.addEventListener("input", function () {
-            const filter = searchChatInput.value.toLowerCase();
-            trainerChats.forEach(chat => {
-                const name = chat.getAttribute("data-trainer").toLowerCase();
-                if (name.includes(filter)) {
-                    chat.style.display = "flex";
-                } else {
-                    chat.style.display = "none";
+        /**
+         * Mengaktifkan mode "klik-untuk-edit" pada pasangan elemen span (lihat) dan input (edit).
+         * @param {HTMLElement} view - Elemen span untuk mode lihat.
+         * @param {HTMLElement} input - Elemen input untuk mode edit.
+         */
+        function enableEditMode(view, input) {
+            if (!view || !input) return;
+            view.addEventListener("click", () => {
+                view.style.display = "none";
+                input.style.display = "block";
+                input.focus();
+            });
+            input.addEventListener("blur", () => {
+                view.textContent = input.value.trim();
+                view.style.display = "block";
+                input.style.display = "none";
+            });
+            input.addEventListener("keypress", e => {
+                if (e.key === "Enter") {
+                    e.preventDefault(); // Mencegah form tersubmit saat menekan enter di input
+                    input.blur();
                 }
             });
+        }
+
+        /**
+         * Memuat semua data profil dari server dan mengisi form.
+         */
+        function loadProfileData() {
+            saveBtn.disabled = true;
+            saveBtn.textContent = "Loading...";
+
+            fetch("http://localhost/StrongU_Project/backend/get_profile.php")
+                .then(res => res.ok ? res.json() : Promise.reject('Gagal memuat profil'))
+                .then(data => {
+                    if (data.error) { throw new Error(data.error); }
+
+                    // Mengisi semua data ke form
+                    const imageUrl = data.profile_pict_url || defaultProfilePic;
+                    sidebarProfileImg.src = imageUrl;
+                    editProfilePicture.src = imageUrl;
+
+                    document.getElementById("sidebar-username").textContent = data.username;
+                    document.getElementById("sidebar-email").textContent = data.email;
+                    document.getElementById("sidebar-phone").textContent = data.noTelp;
+                    
+                    usernameView.textContent = data.username;
+                    emailView.textContent = data.email;
+                    phoneView.textContent = data.noTelp;
+                    birthdayView.textContent = data.birthday;
+                    zipcodeView.textContent = data.zipcode;
+                    
+                    usernameInput.value = data.username;
+                    emailInput.value = data.email;
+                    phoneInput.value = data.noTelp;
+                    birthdayInput.value = data.birthday;
+                    zipcodeInput.value = data.zipcode;
+                    
+                    if (data.level) {
+                        const levelRadio = document.querySelector(`input[name="level"][value="${data.level}"]`);
+                        if (levelRadio) levelRadio.checked = true;
+                    }
+
+                    const checkBoxes = (name, ids) => {
+                        if (!Array.isArray(ids)) return;
+                        document.querySelectorAll(`input[name="${name}[]"]`).forEach(cb => {
+                            cb.checked = ids.includes(parseInt(cb.value));
+                        });
+                    };
+                    
+                    checkBoxes('session', data.session);
+                    checkBoxes('day', data.day);
+                    checkBoxes('goal', data.goal);
+                    
+                    // Menampilkan tab khusus 'Trainer' jika rolenya 'pt'
+                    if (data.role === 'pt' && trainerSettingTab) {
+                        trainerSettingTab.style.display = 'block';
+                    }
+
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = "Save Profile";
+                })
+                .catch(error => {
+                    console.error("Error fetching profile:", error);
+                    alert("Gagal memuat data profil. Periksa koneksi dan coba lagi.");
+                    saveBtn.textContent = "Gagal Memuat";
+                });
+        }
+        
+        /**
+         * Menangani logika perpindahan antar tab.
+         * @param {Event} event - Event klik dari tombol tab.
+         */
+        function handleTabClick(event) {
+            const clickedButton = event.currentTarget;
+            const targetTabId = clickedButton.dataset.tab;
+
+            if (targetTabId === 'logout-profile') {
+                if (confirm("Anda yakin ingin keluar?")) window.location.href = "signin.html";
+                return;
+            }
+            if (targetTabId === 'saved-profile') {
+                window.location.href = "program_taken.html";
+                return;
+            }
+
+            tabButtons.forEach(button => button.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            clickedButton.classList.add('active');
+            const targetContent = document.getElementById(targetTabId);
+            if (targetContent) targetContent.classList.add('active');
+        }
+
+        // =================================================
+        // BAGIAN 3: MENJALANKAN FUNGSI & EVENT LISTENERS
+        // =================================================
+
+        // Terapkan mode edit ke setiap field
+        enableEditMode(usernameView, usernameInput);
+        enableEditMode(emailView, emailInput);
+        enableEditMode(phoneView, phoneInput);
+        enableEditMode(birthdayView, birthdayInput);
+        enableEditMode(zipcodeView, zipcodeInput);
+        
+        // Panggil fungsi untuk memuat data saat halaman dibuka
+        loadProfileData();
+
+        // Tambahkan event listener untuk setiap tombol tab
+        tabButtons.forEach(button => button.addEventListener("click", handleTabClick));
+
+        // --- Event Listener untuk Fitur Gambar Profil ---
+
+        // 1. UPLOAD OTOMATIS SAAT GAMBAR DIPILIH
+        changePictureBtn.addEventListener("click", () => profilePictureInput.click());
+        profilePictureInput.addEventListener("change", function() {
+            if (!this.files || this.files.length === 0) return;
+            const file = this.files[0];
+            const formData = new FormData();
+            formData.append('profile_picture', file);
+
+            const reader = new FileReader();
+            reader.onload = e => {
+                sidebarProfileImg.src = e.target.result;
+                editProfilePicture.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            fetch("http://localhost/StrongU_Project/backend/upload_picture.php", {
+                method: "POST",
+                body: formData,
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message || data.error);
+                if (data.success && data.new_picture_url) {
+                    sidebarProfileImg.src = data.new_picture_url;
+                    editProfilePicture.src = data.new_picture_url;
+                } else if (!data.success) {
+                    loadProfileData(); // Kembalikan ke foto lama jika upload gagal
+                }
+            })
+            .catch(error => {
+                console.error("Upload error:", error);
+                alert("Gagal mengunggah gambar.");
+                loadProfileData();
+            });
+        });
+
+        // 2. HAPUS GAMBAR PROFIL
+        deletePictureBtn.addEventListener("click", function() {
+            if (!confirm("Anda yakin ingin menghapus foto profil?")) return;
+
+            fetch("http://localhost/StrongU_Project/backend/delete_picture.php", {
+                method: "POST"
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message || data.error);
+                if (data.success) {
+                    sidebarProfileImg.src = defaultProfilePic;
+                    editProfilePicture.src = defaultProfilePic;
+                }
+            })
+            .catch(error => console.error("Delete error:", error));
+        });
+
+        // --- Event Listener untuk Simpan Data Teks ---
+        editProfileForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Pastikan semua input yang tersembunyi memiliki nilai terbaru dari span-nya
+            document.querySelectorAll('.edit-mode').forEach(input => {
+                if (input.style.display === 'none') {
+                    const viewId = input.id.replace(/([a-zA-Z]+)/, '$1-view');
+                    const viewElement = document.getElementById(viewId);
+                    if (viewElement) input.value = viewElement.textContent;
+                }
+            });
+
+            // Kumpulkan semua data teks dari form
+            const updatedData = {
+                username: usernameInput.value,
+                email: emailInput.value,
+                noTelp: phoneInput.value,
+                birthday: birthdayInput.value,
+                zipcode: zipcodeInput.value,
+                level: document.querySelector('input[name="level"]:checked')?.value || null,
+                session: Array.from(document.querySelectorAll('input[name="session[]"]:checked')).map(cb => parseInt(cb.value)),
+                day: Array.from(document.querySelectorAll('input[name="day[]"]:checked')).map(cb => parseInt(cb.value)),
+                goal: Array.from(document.querySelectorAll('input[name="goal[]"]:checked')).map(cb => parseInt(cb.value))
+            };
+
+            // Kirim sebagai JSON ke skrip PHP yang HANYA mengurus data teks
+            fetch("http://localhost/StrongU_Project/backend/update_profile.php", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(updatedData),
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message || data.error);
+                if (data.success) {
+                    // Perbarui tampilan di sidebar jika berhasil
+                    document.getElementById("sidebar-username").textContent = updatedData.username;
+                    document.getElementById("sidebar-email").textContent = updatedData.email;
+                    document.getElementById("sidebar-phone").textContent = updatedData.noTelp;
+                }
+            })
+            .catch(error => console.error("Update error:", error));
         });
     }
 

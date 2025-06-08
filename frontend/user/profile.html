@@ -34,161 +34,248 @@
 
 <!-- Bagian Body (Konten Utama) -->
 
-<!-- Main Content -->
     <main id="profile-main">
-    <div class="profile-container">
-        <!-- Bagian Kiri: Profil Trainer -->
-        <div class="left-profile">
-        <a href="home.html" class="back-button">Back</a>
-        <div class="account-container">
-            <div class="profile-img-box">
-            <img src="../images/profile-pict.png" alt="User Photo" class="profile-img" id="sidebar-profile-img">
-            </div>
-            <div class="profile-info-box">
-            <div class="profile-name" id="sidebar-username">Loading...</div>
-            <div class="account-info">
-                <div class="email" id="sidebar-email">Loading...</div>
-                <div class="phone" id="sidebar-phone">Loading...</div>
-            </div>
-            </div>
-        </div>
-        
-        <div class="profile-infopage">
-            <div class="profile-tabs">
-            <button class="tab-button-profile active" data-tab="edit-profile">Edit Profile</button>
-            <button class="tab-button-profile" data-tab="saved-profile">Saved Programs</button>
-            <button class="tab-button-profile" data-tab="setting-profile">Setting</button>
-            <button class="tab-button-profile" data-tab="logout-profile">Log Out</button>
-            </div>
-        </div>
-        </div>
-
-        <!-- Bagian Kanan: Konten Dinamis -->
-        <div class="profile-content" id="profile-content">
-        <!-- Edit Profile Form -->
-        <div class="tab-content active" id="edit-profile">
-            <h2>Edit Profile</h2>
-            <form id="editProfileForm">
-            <div class="profile-section">
-                <div class="edit-profile-img">
-                <img src="../images/profile-pict.png" alt="Profile Photo" id="edit-profile-picture">
-                <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
-                <button type="button" id="changePictureBtn" class="change-pict-text">Change Picture</button>
+        <div class="profile-container">
+            <div class="left-profile">
+                <a href="home.html" class="back-button">Back</a>
+                <div class="account-container">
+                    <div class="profile-img-box">
+                        <img src="../images/profile-pict.png" alt="User Photo" class="profile-img" id="sidebar-profile-img">
+                    </div>
+                    <div class="profile-info-box">
+                        <div class="profile-name" id="sidebar-username">Loading...</div>
+                        <div class="account-info">
+                            <div class="email" id="sidebar-email">Loading...</div>
+                            <div class="phone" id="sidebar-phone">Loading...</div>
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- Username -->
-                <div class="edit-profile-name-box">
-                <div class="edit-name-label">
-                    <span id="profile-name-text">Loading...</span>
-                </div>
-                <input type="text" id="profile-name-input" style="display: none;">
+                <div class="profile-infopage">
+                    <div class="profile-tabs">
+                        <button class="tab-button-profile active" data-tab="edit-profile">Edit Profile</button>
+                        <button class="tab-button-profile" data-tab="saved-profile">Saved Programs</button>
+                        <button class="tab-button-profile" data-tab="setting-profile">Setting</button>
+                        <button class="tab-button-profile" data-tab="trainer-setting">Trainer Setting</button>
+                        <button class="tab-button-profile" data-tab="logout-profile">Log Out</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Email -->
-            <div class="form-group editable-container">
-            <label>Email</label>
-            <div class="editable-field">
-                <span id="email-view" class="view-mode">Loading...</span>
-                <input type="email" id="email" class="edit-mode" style="display: none;">
-            </div>
-            </div>
+            <div class="profile-content" id="profile-content">
+                <div class="tab-content active" id="edit-profile">
+                    <h2>Edit Profile</h2>
+                    <form id="editProfileForm" enctype="multipart/form-data">
+                        
+                        <div class="profile-section">
+                            <div class="edit-profile-img">
+                                <img src="../images/profile-pict.png" alt="Profile Photo" id="edit-profile-picture">
+                                <input type="file" id="profile-picture-input" name="profile_picture" accept="image/*" style="display: none;">
+                                <button type="button" id="changePictureBtn" class="change-pict-text">Change Picture</button>
+                                <button type="button" id="deletePictureBtn" class="delete-pict-text">Delete Picture</button>
+                            </div>
+                            
+                            <div class="edit-profile-name-box">
+                                <label>Username</label>
+                                <div class="editable-field">
+                                    <span id="username-view" class="view-mode">Loading...</span>
+                                    <input type="text" id="username" name="username" class="edit-mode" style="display: none;" required>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Phone -->
-            <div class="form-group editable-container">
-            <label>Phone Number</label>
-            <div class="editable-field">
-                <span id="phone-view" class="view-mode">Loading...</span>
-                <input type="text" id="phone" class="edit-mode" style="display: none;">
-            </div>
-            </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <div class="editable-field">
+                                <span id="email-view" class="view-mode">Loading...</span>
+                                <input type="email" id="email" name="email" class="edit-mode" style="display: none;" required>
+                            </div>
+                        </div>
 
-            <!-- Birthday -->
-            <div class="form-group editable-container">
-            <label>Birthday</label>
-            <div class="editable-field">
-                <span id="birthday-view" class="view-mode">Loading...</span>
-                <input type="date" id="birthday" class="edit-mode" style="display: none;">
-            </div>
-            </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <div class="editable-field">
+                                <span id="phone-view" class="view-mode">Loading...</span>
+                                <input type="text" id="noTelp" name="noTelp" class="edit-mode" style="display: none;" required>
+                            </div>
+                        </div>
 
-            <!-- Zipcode -->
-            <div class="form-group editable-container">
-            <label>Zipcode</label>
-            <div class="editable-field">
-                <span id="zipcode-view" class="view-mode">Loading...</span>
-                <input type="text" id="zipcode" class="edit-mode" style="display: none;">
-            </div>
-            </div>
-            
-            <!-- Session -->
-            <div class="form-group">
-                <label>Session</label>
-                <div class="checkbox-group">
-                <label><input type="checkbox" name="session" value="1"> Morning</label>
-                <label><input type="checkbox" name="session" value="2"> Afternoon</label>
-                <label><input type="checkbox" name="session" value="3"> Evening</label>
+                        <div class="form-group">
+                            <label>Birthday</label>
+                            <div class="editable-field">
+                                <span id="birthday-view" class="view-mode">Loading...</span>
+                                <input type="date" id="birthday" name="birthday" class="edit-mode" style="display: none;" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Zipcode</label>
+                            <div class="editable-field">
+                                <span id="zipcode-view" class="view-mode">Loading...</span>
+                                <input type="text" id="zipcode" name="zipcode" class="edit-mode" style="display: none;" required pattern="\d{5}">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Session</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="session[]" value="1"> Morning</label>
+                                <label><input type="checkbox" name="session[]" value="2"> Afternoon</label>
+                                <label><input type="checkbox" name="session[]" value="3"> Evening</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Day</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="day[]" value="2"> Monday</label>
+                                <label><input type="checkbox" name="day[]" value="3"> Tuesday</label>
+                                <label><input type="checkbox" name="day[]" value="4"> Wednesday</label>
+                                <label><input type="checkbox" name="day[]" value="5"> Thursday</label>
+                                <label><input type="checkbox" name="day[]" value="6"> Friday</label>
+                                <label><input type="checkbox" name="day[]" value="7"> Saturday</label>
+                                <label><input type="checkbox" name="day[]" value="1"> Sunday</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Goals</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="goal[]" value="1"> Weight Loss</label>
+                                <label><input type="checkbox" name="goal[]" value="2"> Firming & Toning</label>
+                                <label><input type="checkbox" name="goal[]" value="3"> Increase Muscle</label>
+                                <label><input type="checkbox" name="goal[]" value="4"> Strength</label>
+                                <label><input type="checkbox" name="goal[]" value="5"> Endurance Training</label>
+                                <label><input type="checkbox" name="goal[]" value="6"> Weight Gain</label>
+                                <label><input type="checkbox" name="goal[]" value="7"> Flexibility</label>
+                                <label><input type="checkbox" name="goal[]" value="8"> Aerobic fitness</label>
+                                <label><input type="checkbox" name="goal[]" value="9"> Body Building</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Level</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="level" value="beginner" required> Beginner</label>
+                                <label><input type="radio" name="level" value="intermediate"> Intermediate</label>
+                                <label><input type="radio" name="level" value="advanced"> Advanced</label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" id="save-profile-btn">Save Profile</button>
+                    </form>
+                </div>
+                
+                <div class="tab-content" id="saved-profile">
+                    <h2>Saved Programs</h2>
+                    <p>This feature is not yet implemented.</p>
+                </div>
+
+                <div class="tab-content" id="trainer-setting">
+                    <h2>Trainer Settings</h2>
+
+                    <form id="trainerInfoForm">
+                        <div class="form-group-trainer">
+                            <label>Description</label>
+                            <div class="editable-field-trainer">
+                                <span id="description-view" class="view-mode">Belum diatur. Klik untuk menambahkan deskripsi.</span>
+                                <textarea id="description" name="description" class="edit-mode" style="display: none;"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group-trainer">
+                            <label>Address</label>
+                            <div class="editable-field-trainer">
+                                <span id="address-view" class="view-mode">Belum diatur.</span>
+                                <input type="text" id="address" name="address" class="edit-mode" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="form-group-trainer">
+                            <label>Experience (in years)</label>
+                            <div class="editable-field-trainer">
+                                <span id="experience-view" class="view-mode">0</span>
+                                <input type="number" id="experience" name="experience" class="edit-mode" style="display: none;" min="0">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-save-trainer-info">Save Trainer Info</button>
+                    </form>
+
+                    <hr class="section-divider">
+
+                    <div class="form-group-trainer">
+                        <label>My Certificates</label>
+                        
+                        <div id="certificate-list-container" style="display: none;">
+                            <table class="trainer-data-table">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Preview</th>
+                                        <th>File Path</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="certificate-table-body">
+                                    </tbody>
+                            </table>
+                        </div>
+                        <p id="no-certificate-message">Anda belum mengunggah sertifikat.</p>
+                        
+                        <form id="cert-upload-form" class="upload-form">
+                            <h4>Upload New Certificate</h4>
+                            <div id="cert-drop-zone" class="drop-zone">
+                                <p>Drag & drop file gambar ke sini, atau klik untuk memilih file</p>
+                                <input type="file" id="cert-file-input" name="certificate_file" accept="image/*" required>
+                            </div>
+                            <p id="cert-file-name" class="file-name-display"></p>
+                            <button type="submit" class="btn-upload">Upload Certificate</button>
+                        </form>
+                    </div>
+                    
+                    <hr class="section-divider">
+
+                    <div class="form-group-trainer">
+                        <label>My Classes</label>
+
+                        <div id="class-list-container" style="display: none;">
+                            <table class="trainer-data-table">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Sessions</th>
+                                        <th>Price/Session</th>
+                                        <th>Total Price</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="class-table-body">
+                                    </tbody>
+                            </table>
+                        </div>
+                        <p id="no-class-message">Anda belum membuat kelas.</p>
+
+                        <form id="add-class-form" class="add-item-form">
+                            <h4>Add New Class</h4>
+                            <div class="form-row">
+                                <div class="form-group-inline">
+                                    <label for="sessionCount">Number of Sessions</label>
+                                    <input type="number" id="sessionCount" name="sessionCount" placeholder="e.g., 8" min="1" required>
+                                </div>
+                                <div class="form-group-inline">
+                                    <label for="pricePerSession">Price per Session (Rp)</label>
+                                    <input type="number" id="pricePerSession" name="pricePerSession" placeholder="e.g., 150000" min="0" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-add">Add Class</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="setting-profile">
+                    <h2>Settings</h2>
+                    <p>This feature is not yet implemented.</p>
                 </div>
             </div>
-            
-            <!-- Day -->
-            <div class="form-group">
-                <label>Day</label>
-                <div class="checkbox-group">
-                <label><input type="checkbox" name="day" value="2"> Monday</label>
-                <label><input type="checkbox" name="day" value="3"> Tuesday</label>
-                <label><input type="checkbox" name="day" value="4"> Wednesday</label>
-                <label><input type="checkbox" name="day" value="5"> Thursday</label>
-                <label><input type="checkbox" name="day" value="6"> Friday</label>
-                <label><input type="checkbox" name="day" value="7"> Saturday</label>
-                <label><input type="checkbox" name="day" value="1"> Sunday</label>
-                </div>
-            </div>
-            
-            <!-- Goals -->
-            <div class="form-group">
-                <label>Goals</label>
-                <div class="checkbox-group">
-                <label><input type="checkbox" name="goal" value="1"> Weight Loss</label>
-                <label><input type="checkbox" name="goal" value="2"> Firming & Toning</label>
-                <label><input type="checkbox" name="goal" value="3"> Increase Muscle</label>
-                <label><input type="checkbox" name="goal" value="4"> Strength</label>
-                <label><input type="checkbox" name="goal" value="5"> Endurance Training</label>
-                <label><input type="checkbox" name="goal" value="6"> Weight Gain</label>
-                <label><input type="checkbox" name="goal" value="7"> Flexibility</label>
-                <label><input type="checkbox" name="goal" value="8"> Aerobic fitness</label>
-                <label><input type="checkbox" name="goal" value="9"> Body Building</label>
-                </div>
-            </div>
-            
-            <!-- Level -->
-            <div class="form-group">
-                <label>Level</label>
-                <div class="radio-group">
-                <label><input type="radio" name="level" value="beginner"> Beginner</label>
-                <label><input type="radio" name="level" value="intermediate"> Intermediate</label>
-                <label><input type="radio" name="level" value="advanced"> Advanced</label>
-                </div>
-            </div>
-            
-            <!-- Save -->
-            <button type="button" id="save-profile-btn">Save</button>
-            </form>
         </div>
-        
-        <!-- Saved Programs (Placeholder) -->
-        <div class="tab-content" id="saved-profile">
-            <h2>Saved Programs</h2>
-            <p>This feature is not yet implemented.</p>
-        </div>
-        
-        <!-- Settings (Placeholder) -->
-        <div class="tab-content" id="setting-profile">
-            <h2>Settings</h2>
-            <p>This feature is not yet implemented.</p>
-        </div>
-        </div>
-    </div>
     </main>
     
 <!-- Bagian Bawah (Footer) -->

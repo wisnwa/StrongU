@@ -895,13 +895,15 @@ color: #ffffff;
 .profile-section {
 display: flex;
 gap: 20px;
-margin-bottom: 60px;
+margin-bottom: 70px;
 }
 
 .edit-profile-img {
 width: 100px;
 height: 100px;
 flex-shrink: 0;
+text-align: center;
+margin-bottom: 20px;
 }
 
 .edit-profile-img img {
@@ -931,9 +933,9 @@ cursor: pointer;
 color: #007bff;
 }
 
-.change-pict-text {
+.change-pict-text, .delete-pict-text {
 font-size: 12px;
-background-color: #007bff;
+background-color: #0392FB;
 padding: 2px;
 color: #ffffff;
 height: 30px;
@@ -941,6 +943,8 @@ width: 100px;
 border-radius: 8px;
 border-color: #025795;
 border: 2px;
+display: block;
+margin: 5px auto;
 }
 
 .form-group {
@@ -1019,6 +1023,7 @@ background-color: #025795;
     width: 100%;
     font-size: 14px;
     color: #333;
+    padding: 5px 0;
 }
 
 .edit-mode {
@@ -1028,6 +1033,8 @@ background-color: #025795;
     border: none;
     outline: none;
     background-color: transparent;
+    box-sizing: border-box;
+    display: none;
 }
 
 /* Gaya tambahan untuk label nama */
@@ -1044,6 +1051,177 @@ background-color: #025795;
     font-size: 14px;
     color: #0392FB;
     cursor: pointer;
+}
+
+#edit-profile-picture { 
+  display: block;
+  width: 100px; 
+  height: 100px; 
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ddd;
+  margin: 0 auto 10px auto;
+  background-color: #f8f8f8;
+}
+
+#profile-picture-input {
+  display: none;
+}
+
+#username {
+  display: none;
+}
+
+/* Styling untuk Trainer Settings Tab */
+#trainer-setting {
+    display: none; /* Awalnya disembunyikan, JS yang akan menampilkan */
+}
+
+.form-group-trainer {
+    margin-bottom: 25px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.form-group-trainer > label {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #0392FB;
+    padding-bottom: 5px;
+}
+
+.editable-field-trainer {
+    position: relative;
+    padding: 10px;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    min-height: 40px;
+    cursor: pointer;
+}
+.editable-field-trainer .view-mode {
+    color: #555;
+}
+.editable-field-trainer .edit-mode {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #0392FB;
+    border-radius: 4px;
+}
+.editable-field-trainer textarea.edit-mode {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.btn-save-trainer-info, .btn-upload, .btn-add {
+    background-color: #0392FB;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+.btn-save-trainer-info:hover, .btn-upload:hover, .btn-add:hover {
+    background-color: #025795;
+}
+
+.section-divider {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin: 40px 0;
+}
+
+/* Tabel Data */
+.trainer-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.trainer-data-table th, .trainer-data-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+.trainer-data-table th {
+    background-color: #0392FB;
+    color: white;
+    font-weight: bold;
+}
+.trainer-data-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+.trainer-data-table img {
+    max-width: 100px;
+    border-radius: 4px;
+}
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+}
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+
+/* Upload Form & Drop Zone */
+.upload-form h4, .add-item-form h4 {
+    margin-top: 20px;
+    color: #333;
+}
+.drop-zone {
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    color: #aaa;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    position: relative;
+}
+.drop-zone:hover {
+    border-color: #0392FB;
+    background-color: #f0f8ff;
+}
+.drop-zone.drag-over {
+    border-color: #025795;
+    background-color: #e0f0ff;
+}
+.drop-zone input[type="file"] {
+    display: none;
+}
+.file-name-display {
+    margin-top: 10px;
+    font-style: italic;
+    color: #333;
+}
+
+/* Form Add Class */
+.add-item-form .form-row {
+    display: flex;
+    gap: 20px;
+}
+.add-item-form .form-group-inline {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.add-item-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
 }
 
 /* === MAIN CONTENT === */
