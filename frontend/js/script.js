@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         window.location.href = "../admin/dashboard.html";
                     } else if (data.role === "user" || data.role === "pt") {
                         if (data.level) { // Cukup periksa apakah level ada (tidak null/kosong)
-                            window.location.href = "profile.html"; // Arahkan ke profil jika sudah melengkapi data
+                            window.location.href = "home.html"; // Arahkan ke profil jika sudah melengkapi data
                         } else {
                             window.location.href = "enter_zipcode.html";
                         }
@@ -468,70 +468,139 @@ document.addEventListener("DOMContentLoaded", function () {
         displayTrainers();
     }
 
-    
-    // ============ TAB NAVIGATION ============
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const tabContents = document.querySelectorAll('.tab-content');
+// =================================================
+    // LOGIKA UNTUK HALAMAN PEMBAYARAN (payment.html)
+    // =================================================
+    const paymentMain = document.getElementById("payment-main");
+    if (paymentMain) {
+        // Ambil data yang disimpan dari halaman trainer
+        const selectedClassId = localStorage.getItem('selectedClassId');
+        
+        // Deklarasi variabel untuk menyimpan data
+        let paymentData = {}; 
 
-    function changeTab(event) {
-        tabButtons.forEach(button => button.classList.remove('active'));
-        tabContents.forEach(content => content.classList.remove('active'));
+        if (!selectedClassId) {
+            paymentMain.innerHTML = "<h2>Error: Class not selected. Please go back and select a class.</h2>";
+            return;
+        }
 
-        const clickedButton = event.currentTarget;
-        clickedButton.classList.add('active');
+        // Ambil detail pembayaran dari server
+        fetch(`http://localhost/StrongU_Project/backend/get_payment_details.php?id=${selectedClassId}`)
+            .then(res => res.ok ? res.json() : Promise.reject('Failed to load payment details.'))
+            .then(data => {
+                paymentData = data; // Simpan data untuk digunakan nanti
+                populatePaymentDetails(data);
+                calculateAndDisplayReceipt(data);
 
-        const tabId = clickedButton.getAttribute('data-tab');
-        const activeContent = document.getElementById(tabId);
-        if (activeContent) activeContent.classList.add('active');
-    }
+                // Update tombol back agar kembali ke halaman trainer yang benar
+                document.getElementById('back-to-trainer-btn').href = `trainer.html?id=${data.trainerID}`;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                paymentMain.innerHTML = `<h2>Error fetching details: ${error.message}</h2>`;
+            });
 
-    tabButtons.forEach(button => {
-        button.addEventListener('click', changeTab);
-    });
+        // --- Fungsi untuk mengisi detail ---
+        function populatePaymentDetails(data) {
+            const container = document.getElementById('payment-details-container');
+            const sessionsText = data.sessionCount == 1 ? 'Session' : 'Sessions';
+            const priceText = `Rp ${new Intl.NumberFormat('id-ID').format(data.pricePerSession)} /Session`;
+            const subtotal = data.sessionCount * data.pricePerSession;
+            const subtotalText = `Sub Total Rp ${new Intl.NumberFormat('id-ID').format(subtotal)}`;
 
-    // ============ PROFILE CARD SELECTION ============
-    const sessionCards = document.querySelectorAll('.session-card');
-    const continueBtn = document.getElementById('continueBtn');
-    let selectedSession = null;
+            container.innerHTML = `
+                <div class="trainer-detail">
+                    <img src="${data.profile_pict_url}" alt="${data.trainerName}" class="trainer-photo" />
+                    <h4 class="trainer-namep">${data.trainerName}</h4>
+                    <div class="session-cardp"> 
+                        <div class="sessions"><span>${data.sessionCount} ${sessionsText}</span></div>
+                        <div class="price"><span>${priceText}</span></div>
+                        <div class="subtotal"><span>${subtotalText}</span></div>
+                    </div>
+                </div>
+            `;
+        }
 
-    sessionCards.forEach(card => {
-        card.addEventListener('click', () => {
-            sessionCards.forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            selectedSession = card.dataset.session;
-            continueBtn.disabled = false;
+        function calculateAndDisplayReceipt(data) {
+            const container = document.getElementById('receipt-container');
+            const subtotal = data.sessionCount * data.pricePerSession;
+            // Hitung admin fee: 5%, min 5rb, max 100rb
+            const adminFee = Math.max(5000, Math.min(100000, subtotal * 0.05));
+            const totalPayment = subtotal + adminFee;
+
+            // Simpan data kalkulasi untuk dikirim saat konfirmasi
+            paymentData.subtotal = subtotal;
+            paymentData.adminFee = adminFee;
+            paymentData.totalPayment = totalPayment;
+
+            container.innerHTML = `
+                <div class="receipt-item">
+                    <span>Subtotal</span>
+                    <span>Rp ${new Intl.NumberFormat('id-ID').format(subtotal)}</span>
+                </div>
+                <div class="receipt-item">
+                    <span>Admin Fees</span>
+                    <span>Rp ${new Intl.NumberFormat('id-ID').format(adminFee)}</span>
+                </div>
+                <hr class="receipt-divider">
+                <div class="receipt-total">
+                    <span>Total Payment</span>
+                    <span>Rp ${new Intl.NumberFormat('id-ID').format(totalPayment)}</span>
+                </div>
+            `;
+        }
+
+        // --- Logika Interaksi UI ---
+        const methodOptions = document.querySelectorAll(".method-option");
+        const confirmBtn = document.getElementById("confirm-btn");
+
+        methodOptions.forEach(option => {
+            option.addEventListener("click", () => {
+                methodOptions.forEach(opt => opt.classList.remove("selected"));
+                option.classList.add("selected");
+                option.querySelector("input[type='radio']").checked = true;
+                confirmBtn.disabled = false;
+                confirmBtn.classList.add("enabled");
+            });
         });
-    });
 
-    if (continueBtn) {
-        continueBtn.addEventListener('click', () => {
-            if (selectedSession) {
-                localStorage.setItem('selectedSession', selectedSession);
-                window.location.href = 'payment.html';
-            }
-        });
-    }
-
-    // ============ PAYMENT METHOD SELECTION ============
-    const methodOptions = document.querySelectorAll(".method-option");
-    const confirmBtn = document.getElementById("confirm-btn");
-
-    methodOptions.forEach(option => {
-        option.addEventListener("click", () => {
-            methodOptions.forEach(opt => opt.classList.remove("selected"));
-            option.classList.add("selected");
-            const radio = option.querySelector("input[type='radio']");
-            if (radio) radio.checked = true;
-            confirmBtn.disabled = false;
-            confirmBtn.classList.add("enabled");
-        });
-    });
-
-    if (confirmBtn) {
         confirmBtn.addEventListener("click", () => {
-            if (!confirmBtn.disabled) {
-                alert("Metode pembayaran dipilih. Lanjut ke proses berikutnya.");
+            if (confirmBtn.disabled) return;
+
+            const selectedMethod = document.querySelector('input[name="payment-method"]:checked');
+            if (!selectedMethod) {
+                alert("Silakan pilih metode pembayaran.");
+                return;
             }
+            
+            // Siapkan data untuk dikirim ke backend
+            const finalData = {
+                classID: paymentData.classID,
+                trainerID: paymentData.trainerID,
+                method: selectedMethod.value,
+                subtotal: paymentData.subtotal,
+                adminFee: paymentData.adminFee,
+                totalPayment: paymentData.totalPayment
+            };
+
+            // Kirim data pembayaran ke server
+            fetch('http://localhost/StrongU_Project/backend/process_payment.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(finalData)
+            })
+            .then(res => res.json())
+            .then(response => {
+                alert(response.message);
+                if (response.success) {
+                    localStorage.removeItem('selectedClassId'); // Hapus data dari local storage
+                    window.location.href = 'payment_success.html';
+                }
+            })
+            .catch(err => {
+                console.error("Payment error:", err);
+                alert("Terjadi kesalahan saat memproses pembayaran.");
+            });
         });
     }
 
@@ -719,8 +788,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById('description').value = data.details.description || '';
                     document.getElementById('address-view').textContent = data.details.address || 'Belum diatur.';
                     document.getElementById('address').value = data.details.address || '';
-                    document.getElementById('experience-view').textContent = data.details.address || 'Belum diatur.';
-                    document.getElementById('experience-view').value = data.details.address || '';
+                    document.getElementById('experience-view').textContent = data.details.experience || 'Belum diatur.';
+                    document.getElementById('experience-view').value = data.details.experience || '';
 
                     // Render tabel sertifikat
                     renderTable('certificate', data.certificates);
@@ -1015,27 +1084,408 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ============ SEND MESSAGE ============
-    const sendBtn = document.getElementById('send-btn');
-    if (sendBtn) {
-        sendBtn.addEventListener('click', function () {
-            const input = document.getElementById('chat-input');
-            const message = input.value.trim();
+    // =================================================
+    // LOGIKA UNTUK HALAMAN DAFTAR CHAT (chat.html)
+    // =================================================
+    const chatMain = document.getElementById("chat-main");
+    if (chatMain) {
+        const chatListContainer = document.getElementById("chatListContainer");
+        const searchInput = document.getElementById("searchInput");
 
-            if (message !== "") {
-                const chatBox = document.getElementById('chat-container');
+        function renderChatList(chats) {
+            chatListContainer.innerHTML = '';
+            if (chats.length === 0) {
+                chatListContainer.innerHTML = '<p>Tidak ada percakapan.</p>';
+                return;
+            }
+            chats.forEach(chat => {
+                const chatElement = document.createElement('div');
+                chatElement.className = 'trainer-chat';
+                chatElement.onclick = () => {
+                    // Simpan info lawan bicara untuk ditampilkan di halaman chatbox
+                    localStorage.setItem('chatboxHeader', JSON.stringify({
+                        name: chat.otherUsername,
+                        pic: chat.profile_pict_url
+                    }));
+                    window.location.href = `chatbox.html?roomID=${chat.roomID}`;
+                };
+                
+                chatElement.innerHTML = `
+                    <div class="trainer-avatar">
+                        <img src="${chat.profile_pict_url}" alt="Profile Picture">
+                    </div>
+                    <div class="trainer-chat-info">
+                        <div class="trainerchat-name">${chat.otherUsername}</div>
+                        <div class="last-message">${chat.lastMessage || '...'}</div>
+                    </div>
+                    ${chat.unreadCount > 0 ? '<div class="unread-indicator"></div>' : ''}
+                `;
+                chatListContainer.appendChild(chatElement);
+            });
+        }
+
+        fetch('http://localhost/StrongU_Project/backend/get_chat_list.php')
+            .then(res => res.json())
+            .then(allChats => {
+                renderChatList(allChats);
+                searchInput.addEventListener('input', () => {
+                    const searchTerm = searchInput.value.toLowerCase();
+                    const filteredChats = allChats.filter(chat => chat.otherUsername.toLowerCase().includes(searchTerm));
+                    renderChatList(filteredChats);
+                });
+            })
+            .catch(err => console.error(err));
+    }
+
+// =================================================
+    // LOGIKA UNTUK HALAMAN CHATBOX (chatbox.html)
+    // =================================================
+    const chatboxMain = document.getElementById("chatbox-main");
+    if (chatboxMain) {
+        const urlParams = new URLSearchParams(window.location.search);
+        let roomID = urlParams.get('roomID'); // Bisa jadi null
+        const withUserID = urlParams.get('withUserID'); // Bisa jadi null
+
+        if (!roomID && !withUserID) {
+            chatboxMain.innerHTML = "<h1>Error: Invalid chat target.</h1>";
+            return;
+        }
+
+        // Ambil info header dari localStorage yang disimpan oleh halaman chat.html atau trainer.html
+        const headerInfo = JSON.parse(localStorage.getItem('chatboxHeader'));
+        const chatboxHeader = document.getElementById('chatbox-header');
+        if (headerInfo) {
+            chatboxHeader.innerHTML = `
+                <a href="chat.html" class="back-button" style="position: static;">Back</a>
+                <img src="${headerInfo.pic}" alt="Avatar" class="trainer-photo">
+                <div class="trainerchatbox-name">${headerInfo.name}</div>
+            `;
+        }
+        
+        const chatContainer = document.getElementById("chat-container");
+        const messageForm = document.getElementById("message-form");
+        const chatInput = document.getElementById("chat-input");
+        let myUserID = null; // Akan kita ambil nanti
+
+        // Fungsi untuk mengambil ID user yang sedang login
+        function fetchMyIDAndMessages() {
+            fetch('http://localhost/StrongU_Project/backend/get_my_info.php') // Anda perlu buat endpoint ini
+            .then(res => res.json())
+            .then(data => {
+                if (data.userID) {
+                    myUserID = data.userID;
+                    if (roomID) fetchMessages(); // Hanya ambil pesan jika room sudah ada
+                }
+            });
+        }
+
+        function renderMessages(messages) {
+            chatContainer.innerHTML = '';
+            messages.forEach(msg => {
                 const msgDiv = document.createElement('div');
-                msgDiv.classList.add('chat-message', 'user-msg');
-                msgDiv.textContent = message;
-                chatBox.appendChild(msgDiv);
-                input.value = "";
-                chatBox.scrollTop = chatBox.scrollHeight;
+                const msgClass = msg.senderID == myUserID ? 'user-msg' : 'trainer-msg';
+                msgDiv.className = `chat-message ${msgClass}`;
+                msgDiv.textContent = msg.messageText;
+                chatContainer.appendChild(msgDiv);
+            });
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function fetchMessages() {
+            if (!roomID) return; // Jangan fetch jika belum ada roomID
+            fetch(`http://localhost/StrongU_Project/backend/get_chat_messages.php?roomID=${roomID}`)
+                .then(res => res.json())
+                .then(renderMessages);
+        }
+
+        messageForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const messageText = chatInput.value.trim();
+            if (messageText === '') return;
+
+            // Siapkan data untuk dikirim. Kirim withUserID jika room belum dibuat.
+            const dataToSend = {
+                messageText: messageText,
+                roomID: roomID,
+                withUserID: roomID ? null : withUserID
+            };
+
+            fetch('http://localhost/StrongU_Project/backend/send_message.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(dataToSend)
+            })
+            .then(res => res.json())
+            .then(response => {
+                if(response.success) {
+                    chatInput.value = '';
+                    // Jika ini pesan pertama, server akan mengembalikan roomID baru
+                    if (response.roomID && !roomID) {
+                        roomID = response.roomID;
+                        // Ganti URL tanpa reload halaman agar ID room tersimpan
+                        window.history.pushState({}, '', `chatbox.html?roomID=${roomID}`);
+                    }
+                    fetchMessages();
+                } else {
+                    alert(response.message);
+                }
+            });
+        });
+
+        fetchMyIDAndMessages(); // Panggil fungsi utama
+        if (roomID) setInterval(fetchMessages, 5000); // Polling hanya jika room sudah ada
+    }
+
+    // =================================================
+    // LOGIKA UNTUK HALAMAN DETAIL TRAINER (trainer.html)
+    // =================================================
+    const trainerMain = document.getElementById("trainer-main");
+    if (trainerMain) {
+        // Ambil ID trainer dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const trainerId = urlParams.get('id');
+
+        if (!trainerId) {
+            trainerMain.innerHTML = "<h1>Trainer ID not found.</h1>";
+            return;
+        }
+
+        // --- Fetch data trainer dari backend ---
+        fetch(`http://localhost/StrongU_Project/backend/get_single_trainer.php?id=${trainerId}`)
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(err => { throw new Error(err.error || 'Trainer not found'); });
+                }
+                return res.json();
+            })
+            .then(data => {
+                // Panggil semua fungsi untuk mengisi halaman dengan data
+                populateTrainerProfile(data.info);
+                populateSessionPlans(data.classes);
+                populateSpecializations(data.goals);
+                populateCertificates(data.certificates);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                trainerMain.innerHTML = `<h1>Error: ${error.message}</h1>`;
+            });
+    }
+
+});
+
+// --- Fungsi-fungsi untuk mengisi halaman (diluar document.addEventListener("DOMContentLoaded", function () {) ---
+
+function populateTrainerProfile(info) {
+    const container = document.getElementById('trainer-profile-card');
+    if (!container) return;
+    
+    const experience = parseInt(info.experience) || 0;
+    const experienceText = experience === 1 ? `${experience} Year` : `${experience} Years`;
+    
+    // Ambil ID trainer dari URL untuk digunakan di tombol chat
+    const urlParams = new URLSearchParams(window.location.search);
+    const trainerId = urlParams.get('id');
+
+    container.innerHTML = `
+        <div class="profile-actions">
+            <a href="home.html" class="back-button">Back</a>
+            <a href="chatbox.html?withUserID=${trainerId}" class="chat-button">Chat</a>
+        </div>
+        <div class="trainer-image">
+            <button class="save-btn">★</button>
+            <img src="${info.profile_pict_url}" alt="${info.username}" class="trainer-pic">
+        </div>
+        <div class="trainer-infopage">
+            <h2>${info.username}</h2>
+            <div class="trainer-details">
+                <div class="detail-item">
+                    <img src="../images/Location-Logo.png" alt="Location">
+                    <span>${info.address || 'N/A'}</span>
+                </div>
+                <div class="detail-item">
+                    <img src="../images/Experience-logo.png" alt="Experience">
+                    <span>${experienceText}</span>
+                </div>
+                <div class="detail-item">
+                    <img src="../images/Review-logo.png" alt="review">
+                    <span>Review 4.5/5</span>
+                </div>
+            </div>
+            <p class="trainer-description">${info.description || 'No description available.'}</p>
+            <div class="trainer-tabs">
+                <button class="tab-button active" data-tab="session-plan">Session Package</button>
+                <button class="tab-button" data-tab="specialization">Specialization</button>
+                <button class="tab-button" data-tab="reviews">Review</button>
+            </div>
+        </div>
+    `;
+
+    // Panggil fungsi navigasi SETELAH tombol tab dibuat.
+    setupTabNavigation();
+}
+
+function handleStartChat(event) {
+    event.preventDefault(); // Mencegah link default berjalan
+    const trainerId = event.currentTarget.dataset.trainerId;
+    
+    // Panggil PHP untuk mencari atau membuat room
+    fetch(`http://localhost/StrongU_Project/backend/find_or_create_room.php?id=${trainerId}`)
+    .then(res => res.json())
+    .then(response => {
+        if (response.success) {
+            // Jika berhasil, simpan info header dan arahkan ke chatbox
+            const headerInfo = {
+                name: document.querySelector('.trainer-infopage h2').textContent,
+                pic: document.querySelector('.trainer-pic').src
+            };
+            localStorage.setItem('chatboxHeader', JSON.stringify(headerInfo));
+            window.location.href = `chatbox.html?roomID=${response.roomID}`;
+        } else {
+            alert(response.message || "Gagal memulai chat.");
+        }
+    })
+    .catch(err => {
+        console.error("Error starting chat:", err);
+        alert("Terjadi kesalahan jaringan.");
+    });
+}
+
+function populateSessionPlans(classes) {
+    const container = document.getElementById('session-cards-container');
+    container.innerHTML = '';
+    if (classes.length === 0) {
+        container.innerHTML = '<p>This trainer has not set up any class packages yet.</p>';
+        return;
+    }
+    
+    classes.forEach(cls => {
+        const sessionsText = cls.sessionCount == 1 ? 'Session' : 'Sessions';
+        const priceText = `Rp ${new Intl.NumberFormat('id-ID').format(cls.pricePerSession)} /Session`;
+        const subtotal = cls.sessionCount * cls.pricePerSession;
+        const subtotalText = `Sub Total Rp ${new Intl.NumberFormat('id-ID').format(subtotal)}`;
+
+        const card = document.createElement('div');
+        card.className = 'session-card';
+        card.dataset.session = cls.classID; // Simpan ID kelas
+        card.innerHTML = `
+            <div class="sessions"><span>${cls.sessionCount} ${sessionsText}</span></div>
+            <div class="price"><span>${priceText}</span></div>
+            <div class="subtotal"><span>${subtotalText}</span></div>
+        `;
+        container.appendChild(card);
+    });
+    
+    // Aktifkan logika pemilihan sesi
+    setupSessionSelection();
+}
+
+function populateSpecializations(goals) {
+    const container = document.getElementById('specializations-container');
+    container.innerHTML = '';
+    if (goals.length === 0) {
+        container.innerHTML = '<h3>No specializations listed.</h3>';
+        return;
+    }
+    
+    goals.forEach(goal => {
+        const specHtml = `
+            <div class="specializations">
+                <h3>${goal.name}</h3>
+                <p>${goal.description}</p>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', specHtml);
+    });
+}
+
+function populateCertificates(certificates) {
+    const container = document.getElementById('certificates-container');
+    container.innerHTML = '';
+    if (certificates.length === 0) return;
+
+    certificates.forEach(cert => {
+        const certHtml = `
+            <div class="certificate-item">
+                <a href="${cert.file_url}" target="_blank">
+                    <img src="${cert.file_url}" alt="Certificate" class="certificate-img">
+                </a>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', certHtml);
+    });
+}
+
+// --- Fungsi untuk interaksi UI ---
+
+function setupTabNavigation() {
+    // Pindahkan selektor ke dalam fungsi ini agar selalu mencari elemen terbaru
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    if(tabButtons.length === 0) return; // Keluar jika tidak ada tombol
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            const clickedButton = event.currentTarget;
+            clickedButton.classList.add('active');
+            
+            const tabId = clickedButton.dataset.tab;
+            const activeContent = document.getElementById(tabId);
+            if (activeContent) activeContent.classList.add('active');
+        });
+    });
+}
+
+function setupSessionSelection() {
+    const sessionCards = document.querySelectorAll('.session-card');
+    const continueBtn = document.getElementById('continueBtn');
+    let selectedClassId = null;
+
+    sessionCards.forEach(card => {
+        card.addEventListener('click', () => {
+            sessionCards.forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedClassId = card.dataset.session;
+            continueBtn.disabled = false;
+        });
+    });
+
+    if (continueBtn) {
+        continueBtn.addEventListener('click', () => {
+            if (selectedClassId) {
+                localStorage.setItem('selectedClassId', selectedClassId);
+                window.location.href = 'payment.html';
             }
         });
     }
+}
 
-    // ============ FUNCTION: openChatbox ============
-    window.openChatbox = function () {
-        window.location.href = "chatbox.html";
-    };
-});
+function handleStartChat(event) {
+    event.preventDefault(); // Mencegah link default berjalan
+    const trainerId = event.currentTarget.dataset.trainerId;
+    
+    // Panggil PHP untuk mencari atau membuat room
+    fetch(`http://localhost/StrongU_Project/backend/find_or_create_room.php?id=${trainerId}`)
+    .then(res => res.json())
+    .then(response => {
+        if (response.success) {
+            // Jika berhasil, simpan info header dan arahkan ke chatbox
+            const headerInfo = {
+                name: document.querySelector('.trainer-infopage h2').textContent,
+                pic: document.querySelector('.trainer-pic').src
+            };
+            localStorage.setItem('chatboxHeader', JSON.stringify(headerInfo));
+            window.location.href = `chatbox.html?roomID=${response.roomID}`;
+        } else {
+            alert(response.message || "Gagal memulai chat.");
+        }
+    })
+    .catch(err => {
+        console.error("Error starting chat:", err);
+        alert("Terjadi kesalahan jaringan.");
+    });
+}
+

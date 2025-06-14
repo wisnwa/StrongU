@@ -34,25 +34,20 @@
 
 
 <!-- Bagian Body (Konten Utama) -->
-<main id="chatbox-main">
-    <a href="chat.html" class="back-button">Back</a>
-  
-    <div class="trainerchat-header">
-      <img src="../images/Trainerfoto.png" alt="Trainer Photo" class="trainer-photo">
-      <div class="trainerchatbox-name">Bobby</div>
-    </div>
-  
-    <div class="chat-container" id="chat-container">
-      <div class="chat-time">24 Feb 2025, 16.40</div>
-      <div class="chat-message trainer-msg">Hey, ready for today's session?</div>
-      <!-- Chat lainnya di sini -->
-    </div>
 
-    <div class="chat-input-container">
-      <input type="text" id="chat-input" placeholder="Type your message...">
-      <span id="send-btn">&#9993;</span>
+<main id="chatbox-main">
+    <div class="trainerchat-header" id="chatbox-header">
+        <a href="chat.html" class="back-button" style="position: relative; top: 0; left: 0;">Back</a>
+        <p>Loading...</p>
     </div>
-  </main>
+ 
+    <div class="chat-container" id="chat-container"></div>
+
+    <form class="chat-input-container" id="message-form">
+        <input type="text" id="chat-input" placeholder="Type your message..." autocomplete="off">
+        <button type="submit" id="send-btn">✉️</button>
+    </form>
+</main>
   
 
 <!-- Bagian Bawah (Footer) -->

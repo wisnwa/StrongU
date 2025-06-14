@@ -34,61 +34,34 @@
     </header>
 
     <!-- Bagian Body (Konten Utama) -->
-    <main id="payment-main">
+      <main id="payment-main">
         <div class="payment-box">
-          <h2 class="payment-title">Payment</h2>
-      
-          <h3 class="section-title">Method</h3>
-          <div class="payment-methods">
-            <label class="method-option">
-              <input type="radio" name="payment-method" />
-              <img src="../images/Logo QRIS.png" alt="Qris" />
-            </label>
-            <label class="method-option">
-              <input type="radio" name="payment-method" />
-              <img src="../images/Mastercard-Logo.wine.png" alt="Master Card" />
-            </label>
-            <label class="method-option">
-              <input type="radio" name="payment-method" />
-              <img src="../images/Visa_Logo.png" alt="Visa" />
-            </label>
-            <label class="method-option">
-              <input type="radio" name="payment-method" />
-              <img src="../images/Bank_Central_Asia.svg.png" alt="BCA" />
-            </label>
-            <label class="method-option">
-              <input type="radio" name="payment-method" />
-              <img src="../images/BNI_logo.svg.png" alt="BNI" />
-            </label>
-            <label class="method-option">
-              <input type="radio" name="payment-method" />
-              <img src="../images/Logo_BRI.png" alt="BRI" />
-            </label>
-            <label class="method-option">
-              <input type="radio" name="payment-method" />
-              <img src="../images/Logo_ovo_purple.svg.png" alt="OVO" />
-            </label>
-            <label class="method-option">
-              <input type="radio" name="payment-method" />
-              <img src="../images/ShopeePay-Horizontal_O.png" alt="ShopeePay" />
-            </label>
-          </div>
-      
-          <h3 class="section-title">Detail</h3>
-          <div class="trainer-detail">
-            <img src="../images/Trainerfoto.png" alt="Trainer Bobby" class="trainer-photo" />
-            <h4 class="trainer-namep">Bobby</h4>
-            <div class="session-cardp">
-              <div class="sessions"><span>4 Sessions</span></div>
-              <div class="price"><span>Rp 250.000 /Session</span></div>
-              <div class="subtotal"><span>Sub Total Rp 1.000.000</span></div>
+            <h2 class="payment-title">Payment</h2>
+        
+            <h3 class="section-title">Method</h3>
+            <div class="payment-methods">
+                <label class="method-option"><input type="radio" name="payment-method" value="QRIS"><img src="../images/Logo QRIS.png" alt="Qris"></label>
+                <label class="method-option"><input type="radio" name="payment-method" value="MasterCard"><img src="../images/Mastercard-Logo.wine.png" alt="Master Card"></label>
+                <label class="method-option"><input type="radio" name="payment-method" value="Visa"><img src="../images/Visa_Logo.png" alt="Visa"></label>
+                <label class="method-option"><input type="radio" name="payment-method" value="BCA"><img src="../images/Bank_Central_Asia.svg.png" alt="BCA"></label>
+                <label class="method-option"><input type="radio" name="payment-method" value="BNI"><img src="../images/BNI_logo.svg.png" alt="BNI"></label>
+                <label class="method-option"><input type="radio" name="payment-method" value="BRI"><img src="../images/Logo_BRI.png" alt="BRI"></label>
+                <label class="method-option"><input type="radio" name="payment-method" value="OVO"><img src="../images/Logo_ovo_purple.svg.png" alt="OVO"></label>
+                <label class="method-option"><input type="radio" name="payment-method" value="ShopeePay"><img src="../images/ShopeePay-Horizontal_O.png" alt="ShopeePay"></label>
+                </div>
+        
+            <h3 class="section-title">Detail</h3>
+            <div id="payment-details-container">
+                <p style="text-align: center;">Loading details...</p>
             </div>
-          </div>
-      
-          <button id="confirm-btn" disabled>Confirm</button>
-          <a href="trainer.html" class="back-button">Back</a>
+
+            <div class="receipt" id="receipt-container">
+                </div>
+        
+            <button id="confirm-btn" disabled>Confirm</button>
+            <a href="home.html" id="back-to-trainer-btn" class="back-button">Back</a>
         </div>
-      </main>
+    </main>
       
 <!-- Bagian Bawah (Footer) -->
     <footer>

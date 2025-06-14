@@ -48,128 +48,27 @@
 <!-- Main Content -->
     <main id="trainer-main">
         <div class="trainer-container">
-            <!-- Bagian Kiri: Profil Trainer -->
-            <div class="trainer-profile">
-                <a href="home.html" class="back-button">Back</a>
-                <div class="trainer-image">
-                    <button class="save-btn">★</button>
-                    <img src="../images/Trainerfoto.png" alt="Bobby" class="trainer-pic">
-                </div>
-                <div class="trainer-infopage">
-                    <h2>BOBBY</h2>
-                    <div class="trainer-details">
-                        <div class="detail-item">
-                            <img src="../images/Location-Logo.png" alt="Location">
-                            <span>Surabaya</span>
-                        </div>
-                        <div class="detail-item">
-                            <img src="../images/Experience-logo.png" alt="Experience">
-                            <span>3 Years</span>
-                        </div>
-                        <div class="detail-item">
-                            <img src="../images/Review-logo.png" alt="review">
-                            <span> Review 4/5</span>
-                        </div>
-                    </div>
-                    <p class="trainer-description">
-                        Saya adalah seorang personal trainer profesional dengan spesialisasi dalam weight gain dan body building. Dengan pendekatan yang berbasis sains dan pengalaman bertahun-tahun, saya membantu klien mencapai tubuh yang lebih kuat, berotot, dan ideal sesuai dengan tujuan mereka. Program saya dirancang secara personal untuk memastikan progres yang optimal, menciptakan pola latihan yang efektif, nutrisi yang tepat, serta strategi pemulihan yang maksimal.
-                    </p>
-                    <!-- Tabs -->
-                    <div class="trainer-tabs">
-                        <button class="tab-button active" data-tab="session-plan">Session Package</button>
-                        <button class="tab-button" data-tab="specialization">Specialization</button>
-                        <button class="tab-button" data-tab="reviews">Review</button>
-                    </div>
-                </div>
+            <div class="trainer-profile" id="trainer-profile-card">
+                <p style="padding: 20px; text-align: center;">Loading trainer data...</p>
             </div>
 
-            <!-- Bagian Kanan: Konten Dinamis -->
             <div class="trainer-content">
-                <!-- Session Plan -->
                 <div class="tab-content active" id="session-plan">
                     <h2>Select Session Plan</h2>
-                
-                    <div class="session-card" data-session="4">
-                        <div class="sessions"><span>4 Sessions</span></div>
-                        <div class="price"><span>Rp 250.000 /Session</span></div>
-                        <div class="subtotal"><span>Sub Total Rp 1.000.000</span></div>
-                    </div>
-                
-                    <div class="session-card" data-session="8">
-                        <div class="sessions"><span>8 Sessions</span></div>
-                        <div class="price"><span>Rp 220.000 /Session</span></div>
-                        <div class="subtotal"><span>Sub Total Rp 1.760.000</span></div>
-                    </div>
-                
-                    <div class="session-card" data-session="12">
-                        <div class="sessions"><span>12 Sessions</span></div>
-                        <div class="price"><span>Rp 200.000 /Session</span></div>
-                        <div class="subtotal"><span>Sub Total Rp 2.400.000</span></div>
-                    </div>
-                
+                    <div id="session-cards-container"></div>
                     <button class="continue-btn" id="continueBtn" disabled>Continue</button>
                 </div>
-                
 
-                <!-- Specialization -->
                 <div class="tab-content" id="specialization">
                     <h2>Specialization & Certification</h2>
-
-                    <div class="specializations">
-                        <h3>Weight Gain</h3>
-                        <p>
-                            Program Weight Gain dirancang khusus bagi individu yang ingin meningkatkan berat badan secara sehat dan terkontrol, 
-                            dengan fokus utama pada penambahan massa otot (lean muscle), bukan sekadar lemak tubuh.
-                        </p>
-                    </div>
-
-                    <div class="specializations">
-                        <h3>Body Building</h3>
-                        <p>
-                            Program Body Building difokuskan pada pembentukan massa otot maksimal, definisi otot yang jelas, dan simetri tubuh ideal 
-                            melalui latihan beban yang terstruktur dan nutrisi yang terukur. Metode ini tidak hanya meningkatkan penampilan fisik, 
-                            tetapi juga mengajarkan disiplin tinggi, teknik latihan lanjutan, serta manajemen nutrisi yang presisi.
-                        </p>
-                    </div>
-
-                    <div class="certificate-item">
-                        <img src="../images/Certificate.png" alt="Certificate 1" class="certificate-img">
-                    </div>
-
-                    <div class="certificate-item">
-                        <img src="../images/Certificate.png" alt="Certificate 2" class="certificate-img">
-                    </div>
+                    <div id="specializations-container"></div>
+                    <hr class="section-divider">
+                    <div id="certificates-container" class="certificate-gallery"></div>
                 </div>
 
-
-                <!-- Review -->
                 <div class="tab-content" id="reviews">
                     <h2>User Reviews</h2>
-
-                    <div class="review-box">
-                        <div class="review-header">
-                            <span class="user-name">Aan</span>
-                            <span class="user-rating">⭐5/5</span>
-                        </div>
-                        <p class="review-text">Trainer baik dan sangat membantu.</p>
-                    </div>
-                
-                    <div class="review-box">
-                        <div class="review-header">
-                            <span class="user-name">Wisnu</span>
-                            <span class="user-rating">⭐4/5</span>
-                        </div>
-                        <p class="review-text">Sangat profesional dan hasil latihan terasa.</p>
-                    </div>
-
-                    <div class="review-box">
-                        <div class="review-header">
-                            <span class="user-name">Daniel</span>
-                            <span class="user-rating">⭐5/5</span>
-                        </div>
-                        <p class="review-text">Sangat membantu bulking</p>
-                    </div>
-
+                    <p>Review feature is not yet implemented.</p>
                 </div>
             </div>
         </div>

@@ -286,6 +286,32 @@ footer {
     margin-top: 80px;
 }
 
+/* Container untuk tombol Back dan Chat */
+.profile-actions {
+    display: flex;
+    justify-content: space-between; /* Mendorong item ke ujung kiri dan kanan */
+    align-items: center;
+    padding: 15px 0;
+    margin-bottom: 10px;
+}
+
+/* Tombol Chat (mirip dengan back-button tapi warna primer) */
+.chat-button {
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #0392FB;
+    text-decoration: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: 1px solid #0392FB;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.chat-button:hover {
+    background-color: #025795;
+}
+
 .trainer-container {
     display: flex;
     flex-direction: row;
@@ -321,7 +347,7 @@ footer {
     left: 10px;
     background-color: #ffffff71;
     border: none;
-    color: #0392FB;
+    color: #007bff;
     border-radius: 50%;
     width: 35px;
     height: 35px;
@@ -344,6 +370,7 @@ footer {
 
 .trainer-infopage {
     padding: 0px;
+    background-color: #ffffff;
 }
 
 .trainer-info h2 {
@@ -364,7 +391,7 @@ footer {
     gap: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    background-color: #0392FB;
+    background-color: #007bff;
     color: #ffffff;
     border-radius: 5px;
     font-size: 20px;
@@ -383,6 +410,10 @@ footer {
     line-height: 1.6;
     margin-top: 20px;
     font-weight: lighter;
+    background-color: #0392FB;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 10px;    
 }
 
 .trainer-tabs {
@@ -396,10 +427,12 @@ footer {
 .tab-button {
     padding-top: 10px;
     padding-bottom: 10px;
-    background-color: #50BDF5;
+    background-color: #ffffff;
     border: 0px solid #0392FB;
     border-radius: 5px;
-    color: #ffffff;
+    border-color: #0392FB;
+    border: solid 3px;;
+    color: #0392FB;
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
@@ -431,6 +464,8 @@ footer {
 
 .tab-button.active {
     background-color: #0392FB;
+    border: solid 3px;
+    border-color: #0392FB;
     color: white;
 }
 
