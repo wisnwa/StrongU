@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2025 at 07:15 PM
+-- Generation Time: Jun 14, 2025 at 06:45 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -158,7 +158,11 @@ CREATE TABLE `messages` (
 INSERT INTO `messages` (`messageID`, `roomID`, `senderID`, `messageText`, `sentAt`, `isRead`) VALUES
 (1, 1, 10, 'test tod', '2025-06-13 17:09:22', 1),
 (2, 1, 10, 'anjay', '2025-06-13 17:10:30', 1),
-(3, 1, 11, 'krene', '2025-06-13 17:11:15', 0);
+(3, 1, 11, 'krene', '2025-06-13 17:11:15', 1),
+(4, 1, 10, 'testinggg', '2025-06-14 16:01:07', 0),
+(5, 1, 10, 'test test haloooo test', '2025-06-14 16:11:41', 0),
+(6, 1, 10, 'testttt', '2025-06-14 16:11:51', 0),
+(7, 1, 10, 'test', '2025-06-14 16:19:51', 0);
 
 -- --------------------------------------------------------
 
@@ -243,6 +247,26 @@ CREATE TABLE `room_participants` (
 INSERT INTO `room_participants` (`roomID`, `userID`) VALUES
 (1, 10),
 (1, 11);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `saved_trainers`
+--
+
+CREATE TABLE `saved_trainers` (
+  `userID` int(11) UNSIGNED NOT NULL,
+  `trainerID` int(11) UNSIGNED NOT NULL,
+  `savedAt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `saved_trainers`
+--
+
+INSERT INTO `saved_trainers` (`userID`, `trainerID`, `savedAt`) VALUES
+(10, 11, '2025-06-14 15:35:18'),
+(10, 14, '2025-06-14 15:35:57');
 
 -- --------------------------------------------------------
 
@@ -441,6 +465,13 @@ ALTER TABLE `room_participants`
   ADD KEY `fk_participant_user` (`userID`);
 
 --
+-- Indexes for table `saved_trainers`
+--
+ALTER TABLE `saved_trainers`
+  ADD PRIMARY KEY (`userID`,`trainerID`),
+  ADD KEY `fk_saved_trainer` (`trainerID`);
+
+--
 -- Indexes for table `session`
 --
 ALTER TABLE `session`
@@ -509,7 +540,7 @@ ALTER TABLE `goal`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `messageID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `payment`
@@ -584,6 +615,13 @@ ALTER TABLE `personal_trainer`
 ALTER TABLE `room_participants`
   ADD CONSTRAINT `fk_participant_room` FOREIGN KEY (`roomID`) REFERENCES `rooms` (`roomID`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_participant_user` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `saved_trainers`
+--
+ALTER TABLE `saved_trainers`
+  ADD CONSTRAINT `fk_saved_trainer` FOREIGN KEY (`trainerID`) REFERENCES `personal_trainer` (`ptID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_saved_user` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `user_day`

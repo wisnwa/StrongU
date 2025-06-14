@@ -1082,6 +1082,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
         });
+
     }
 
     // =================================================
@@ -1137,7 +1138,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => console.error(err));
     }
 
-// =================================================
+    // =================================================
     // LOGIKA UNTUK HALAMAN CHATBOX (chatbox.html)
     // =================================================
     const chatboxMain = document.getElementById("chatbox-main");
@@ -1179,15 +1180,68 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
+        // Fungsi untuk menampilkan pesan
         function renderMessages(messages) {
             chatContainer.innerHTML = '';
+            let lastMessageTimestamp = null;
+
             messages.forEach(msg => {
+                const currentMessageDate = new Date(msg.sentAt);
+                let shouldShowTimestamp = false;
+
+                if (lastMessageTimestamp === null) {
+                    shouldShowTimestamp = true;
+                } else {
+                    const lastMessageDate = new Date(lastMessageTimestamp);
+                    
+                    // Tampilkan timestamp jika menitnya berbeda
+                    if (currentMessageDate.getMinutes() !== lastMessageDate.getMinutes() ||
+                        currentMessageDate.getHours() !== lastMessageDate.getHours() ||
+                        currentMessageDate.getDate() !== lastMessageDate.getDate() ||
+                        currentMessageDate.getMonth() !== lastMessageDate.getMonth() ||
+                        currentMessageDate.getFullYear() !== lastMessageDate.getFullYear()) 
+                    {
+                        shouldShowTimestamp = true;
+                    }
+                }
+
+                if (shouldShowTimestamp) {
+                    const timeDiv = document.createElement('div');
+                    timeDiv.className = 'chat-time';
+                    // Panggil fungsi format yang baru
+                    timeDiv.textContent = formatChatTimestamp(currentMessageDate); 
+                    chatContainer.appendChild(timeDiv);
+                }
+
+                // Render gelembung pesan (logika ini sama seperti sebelumnya)
+                const isMyMessage = msg.senderID == myUserID;
+                const msgContainer = document.createElement('div');
                 const msgDiv = document.createElement('div');
-                const msgClass = msg.senderID == myUserID ? 'user-msg' : 'trainer-msg';
-                msgDiv.className = `chat-message ${msgClass}`;
-                msgDiv.textContent = msg.messageText;
-                chatContainer.appendChild(msgDiv);
+                
+                if (isMyMessage) {
+                    msgContainer.className = 'user-msg-container';
+                    msgDiv.className = 'chat-message user-msg';
+                    msgDiv.textContent = msg.messageText;
+                    
+                    msgContainer.appendChild(msgDiv);
+                    if (msg.isRead == 1) {
+                        const readReceipt = document.createElement('div');
+                        readReceipt.className = 'read-receipt';
+                        readReceipt.textContent = 'Read';
+                        msgContainer.appendChild(readReceipt);
+                    }
+                    chatContainer.appendChild(msgContainer);
+                } else {
+                    msgDiv.className = 'chat-message trainer-msg';
+                    msgDiv.textContent = msg.messageText;
+                    chatContainer.appendChild(msgDiv);
+                }
+
+                // Update timestamp terakhir untuk perbandingan di iterasi berikutnya
+                lastMessageTimestamp = msg.sentAt;
             });
+
+            // Auto-scroll ke pesan terbaru
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
         
@@ -1236,6 +1290,73 @@ document.addEventListener("DOMContentLoaded", function () {
         if (roomID) setInterval(fetchMessages, 5000); // Polling hanya jika room sudah ada
     }
 
+// =======================================================
+    // LOGIKA UNTUK HALAMAN PROGRAM TAKEN (program_taken.html)
+    // =======================================================
+    const takenMain = document.getElementById("taken-main");
+    if (takenMain) {
+        const takenContainer = document.getElementById('taken-list-container');
+        const savedContainer = document.getElementById('saved-list-container');
+
+        fetch('http://localhost/StrongU_Project/backend/get_my_programs.php')
+        .then(res => res.json())
+        .then(data => {
+            // Render Program Taken
+            takenContainer.innerHTML = '';
+            if (data.taken && data.taken.length > 0) {
+                data.taken.forEach(trainer => {
+                    const card = document.createElement('a');
+                    card.href = `trainer.html?id=${trainer.userID}`;
+                    // REVISI: Gunakan style card yang sama dengan "Saved Program"
+                    card.className = 'trainer-card'; 
+                    card.style.backgroundImage = `url('${trainer.profile_pict_url}')`;
+
+                    // REVISI: Gunakan struktur innerHTML yang lengkap
+                    card.innerHTML = `
+                        <div class="trainer-info">
+                            <h3 class="trainer-name">${trainer.username.split(' ')[0]}</h3>
+                            <p class="trainer-location">${trainer.address || 'N/A'}</p>
+                            <div class="trainer-bottom">
+                                <div class="trainer-status">Program Active</div>
+                                <div class="trainer-rating"><p>⭐ 4.5/5</p></div>
+                            </div>
+                        </div>
+                    `;
+                    takenContainer.appendChild(card);
+                });
+            } else {
+                takenContainer.innerHTML = '<p>Anda belum membeli program apa pun.</p>';
+            }
+
+            // Render Saved Program (Logika ini sudah benar, tidak ada perubahan)
+            savedContainer.innerHTML = '';
+            if (data.saved && data.saved.length > 0) {
+                data.saved.forEach(trainer => {
+                    const card = document.createElement('a');
+                    card.href = `trainer.html?id=${trainer.userID}`;
+                    card.className = 'trainer-card';
+                    card.style.backgroundImage = `url('${trainer.profile_pict_url}')`;
+                    card.innerHTML = `
+                        <div class="trainer-info">
+                            <h3 class="trainer-name">${trainer.username.split(' ')[0]}</h3>
+                            <p class="trainer-location">${trainer.address || 'N/A'}</p>
+                            <div class="trainer-bottom">
+                                <div class="trainer-price">
+                                    <p class="price-label">Start From</p>
+                                    <p class="price-value">${trainer.startingPrice ? new Intl.NumberFormat('id-ID').format(trainer.startingPrice) : '-'}</p>
+                                </div>
+                                <div class="trainer-rating"><p>⭐ 4.5/5</p></div>
+                            </div>
+                        </div>
+                    `;
+                    savedContainer.appendChild(card);
+                });
+            } else {
+                savedContainer.innerHTML = '<p>Anda belum menyimpan trainer.</p>';
+            }
+        });
+    }
+
     // =================================================
     // LOGIKA UNTUK HALAMAN DETAIL TRAINER (trainer.html)
     // =================================================
@@ -1264,11 +1385,48 @@ document.addEventListener("DOMContentLoaded", function () {
                 populateSessionPlans(data.classes);
                 populateSpecializations(data.goals);
                 populateCertificates(data.certificates);
+
+                checkSaveStatus(trainerId);
             })
             .catch(error => {
                 console.error("Error:", error);
                 trainerMain.innerHTML = `<h1>Error: ${error.message}</h1>`;
             });
+        
+        // Tambahkan fungsi baru ini di dalam blok if(trainerMain)
+        function checkSaveStatus(trainerId) {
+            fetch(`http://localhost/StrongU_Project/backend/get_save_status.php?id=${trainerId}`)
+            .then(res => res.json())
+            .then(data => {
+                const saveBtn = document.querySelector('.save-btn');
+                if (saveBtn) {
+                    if (data.isSaved) {
+                        saveBtn.classList.add('saved');
+                    } else {
+                        saveBtn.classList.remove('saved');
+                    }
+                }
+            });
+        }
+
+        // Gunakan event delegation karena tombol dibuat dinamis
+        document.getElementById('trainer-profile-card').addEventListener('click', function(e) {
+            if (e.target && e.target.matches('.save-btn')) {
+                const trainerId = new URLSearchParams(window.location.search).get('id');
+                fetch('http://localhost/StrongU_Project/backend/toggle_save_trainer.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ trainerID: trainerId })
+                })
+                .then(res => res.json())
+                .then(response => {
+                    if (response.success) {
+                        e.target.classList.toggle('saved', response.saved);
+                    }
+                    alert(response.message);
+                });
+            }
+        });
     }
 
 });
@@ -1489,3 +1647,55 @@ function handleStartChat(event) {
     });
 }
 
+/**
+ * Memformat tanggal untuk timestamp di chat.
+ * @param {Date} date - Objek Date dari timestamp pesan.
+ * @returns {string} - String tanggal yang sudah diformat.
+ */
+function formatChatTimestamp(date) {
+    const now = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(now.getDate() - 7);
+
+    // Opsi untuk format Indonesia
+    const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+    
+    // Jika tanggal masih dalam 7 hari terakhir
+    if (date > sevenDaysAgo) {
+        const dayOptions = { weekday: 'short' };
+        // Gabungkan Hari dan Waktu, contoh: "Rab, 19:44"
+        return `${date.toLocaleDateString('id-ID', dayOptions)}, ${date.toLocaleTimeString('id-ID', timeOptions)}`;
+    } 
+    // Jika sudah lebih lama
+    else {
+        const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+        // Contoh: "23 Juni 2024"
+        return date.toLocaleDateString('id-ID', dateOptions);
+    }
+}
+
+/**
+ * Memformat tanggal untuk timestamp di chat dengan aturan spesifik.
+ * @param {Date} date - Objek Date dari timestamp pesan.
+ * @returns {string} - String tanggal yang sudah diformat.
+ */
+function formatChatTimestamp(date) {
+    const now = new Date();
+    const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
+
+    // Opsi untuk format Indonesia
+    const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+    
+    // Jika tanggal masih dalam 7 hari terakhir
+    if (now - date < sevenDaysInMs) {
+        const dayOptions = { weekday: 'short' };
+        // Contoh: "Rab, 19:44"
+        return `${date.toLocaleDateString('id-ID', dayOptions)}, ${date.toLocaleTimeString('id-ID', timeOptions)}`;
+    } 
+    // Jika sudah lebih lama dari 7 hari
+    else {
+        const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+        // Contoh: "23 Juni 2024, 19:44"
+        return `${date.toLocaleDateString('id-ID', dateOptions)}, ${date.toLocaleTimeString('id-ID', timeOptions)}`;
+    }
+}

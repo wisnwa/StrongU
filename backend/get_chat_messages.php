@@ -15,7 +15,7 @@ $stmt_read->bind_param("ii", $roomID, $myUserID);
 $stmt_read->execute();
 $stmt_read->close();
 
-// Ambil semua pesan dari room ini
+// Ambil semua pesan DENGAN status isRead
 $stmt_msg = $conn->prepare("SELECT messageID, senderID, messageText, sentAt, isRead FROM messages WHERE roomID = ? ORDER BY sentAt ASC");
 $stmt_msg->bind_param("i", $roomID);
 $stmt_msg->execute();
