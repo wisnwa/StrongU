@@ -30,7 +30,6 @@
                     </div>
                     <div class="admin-name" id="admin-username">Loading...</div> 
                 </div>
-
                 <div class="features">
                     <button class="tab-button active" data-tab="dashboard">Dashboard</button>
                     <button class="tab-button" data-tab="pt-database">PT Database</button>
@@ -45,86 +44,88 @@
                 <div class="tab-content active" id="dashboard">
                     <h2>Dashboard</h2>
                     <div class="numbers-data">
-                        <div class="stat-card">
-                            <div class="stat-info">
-                                <div class="stat-number" id="total-users">0</div>
-                                <div class="stat-label">Total Users</div>
+                        <div class="stat-card"><div class="stat-info"><div class="stat-number" id="total-users">0</div><div class="stat-label">Total Users</div></div><div class="stat-icon"><img src="../images/User-logo-data.png"></div></div>
+                        <div class="stat-card"><div class="stat-info"><div class="stat-number" id="total-trainers">0</div><div class="stat-label">Total Trainers</div></div><div class="stat-icon"><img src="../images/Trainer-logo-data.png"></div></div>
+                        <div class="stat-card"><div class="stat-info"><div class="stat-number" id="today-income">Rp 0</div><div class="stat-label">Today's Income</div></div></div>
+                    </div>
+                    <!-- Wadah untuk Grafik -->
+                    <div class="graph-row">
+                        <div class="graph-container">
+                            <div class="graph-header">
+                                <h3>Visitors Growth</h3>
+                                <select id="visitor-period-filter" class="period-filter">
+                                    <option value="7">Last 7 Days</option>
+                                    <option value="30" selected>Last 30 Days</option>
+                                </select>
                             </div>
-                            <div class="stat-icon"><img src="../images/User-logo-data.png" alt="icon user"></div>
+                            <canvas id="visitor-chart"></canvas>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-info">
-                                <div class="stat-number" id="total-trainers">0</div>
-                                <div class="stat-label">Total Trainers</div>
+                        <div class="graph-container">
+                            <div class="graph-header">
+                                <h3>Income & Profit</h3>
+                                <select id="income-period-filter" class="period-filter">
+                                    <option value="7">Last 7 Days</option>
+                                    <option value="30" selected>Last 30 Days</option>
+                                </select>
                             </div>
-                            <div class="stat-icon"><img src="../images/Trainer-logo-data.png" alt="icon trainer"></div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-info">
-                                <div class="stat-number" id="today-income">Rp 0</div>
-                                <div class="stat-label">Today's Income</div>
-                            </div>
+                            <canvas id="income-chart"></canvas>
                         </div>
                     </div>
-                    <p style="text-align:center; margin-top:50px;">Grafik akan diimplementasikan pada tahap selanjutnya.</p>
                 </div>
 
                 <div class="tab-content" id="pt-database">
                     <h2>Personal Trainer Database</h2>
-                    <div class="table-controls">
-                        <input type="text" id="pt-search-input" placeholder="Search by name or email...">
-                    </div>
-                    <div class="table-container">
-                        <table class="data-table" id="pt-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Profile</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Join Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="pt-table-body"></tbody>
-                        </table>
-                    </div>
+                    <div class="table-controls"><input type="text" id="pt-search-input" placeholder="Search by name or email..."></div>
+                    <div class="table-container"><table class="data-table" id="pt-table"><thead><tr><th>ID</th><th>Profile</th><th>Name</th><th>Email</th><th>Join Date</th><th>Actions</th></tr></thead><tbody id="pt-table-body"></tbody></table></div>
                 </div>
-
                 <div class="tab-content" id="user-database">
                     <h2>User Database</h2>
-                    <div class="table-controls">
-                        <input type="text" id="user-search-input" placeholder="Search by name or email...">
-                    </div>
-                    <div class="table-container">
-                        <table class="data-table" id="user-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Profile</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Join Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="user-table-body"></tbody>
-                        </table>
-                    </div>
+                    <div class="table-controls"><input type="text" id="user-search-input" placeholder="Search by name or email..."></div>
+                    <div class="table-container"><table class="data-table" id="user-table"><thead><tr><th>ID</th><th>Profile</th><th>Name</th><th>Email</th><th>Join Date</th><th>Actions</th></tr></thead><tbody id="user-table-body"></tbody></table></div>
                 </div>
 
-                <div class="tab-content" id="transaction"><p>Fitur Monitor Transaksi akan dibuat selanjutnya.</p></div>
-                <div class="tab-content" id="add-pt"><p>Fitur Tambah PT akan dibuat selanjutnya.</p></div>
-                <div class="tab-content" id="setting"><p>Fitur Setting Admin akan dibuat selanjutnya.</p></div>
+                <div class="tab-content" id="transaction">
+                    <h2>Transaction History</h2>
+                    <div class="table-controls"><input type="text" id="transaction-search-input" placeholder="Search by User, Trainer, or Status..."></div>
+                    <div class="table-container"><table class="data-table" id="transaction-table"><thead><tr><th>Payment ID</th><th>Date</th><th>Buyer</th><th>Trainer</th><th>Amount</th><th>Status</th></tr></thead><tbody id="transaction-table-body"></tbody></table></div>
+                </div>
+
+                <div class="tab-content" id="add-pt">
+                    <h2>Add New Personal Trainer</h2>
+                    <p>Search for an existing user to promote them to a Personal Trainer.</p>
+                    <div class="table-controls"><input type="text" id="add-pt-search-input" placeholder="Search user by name or email..."></div>
+                    <div class="table-container"><table class="data-table" id="add-pt-table"><thead><tr><th>ID</th><th>Profile</th><th>Name</th><th>Email</th><th>Action</th></tr></thead><tbody id="add-pt-table-body"></tbody></table></div>
+                </div>
+
+                <div class="tab-content" id="setting">
+                    <h2>Admin Settings</h2>
+                    <p>Edit your personal information as an admin.</p>
+                    <form id="admin-setting-form" class="setting-form">
+                        <div class="form-group">
+                            <label for="admin-username-input">Username</label>
+                            <input type="text" id="admin-username-input" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-email-input">Email</label>
+                            <input type="email" id="admin-email-input" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-notelp-input">Phone Number</label>
+                            <input type="text" id="admin-notelp-input" name="noTelp">
+                        </div>
+                        <button type="submit">Save Settings</button>
+                    </form>
+                </div>
             </div>
         </div>
     </main>
-
+    
 <!-- Bagian Bawah (Footer) -->
     <footer>
         <p>2025 StrongU. All Rights Reserved.</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/script-admin.js"></script>
 </div>
 </body>

@@ -77,30 +77,27 @@ footer {
 }
 
 /* === MAIN === */
+/* === MAIN === */
 #admin-main {
-    flex-grow: 1; /* Akan bertambah jika halaman terlalu pendek */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0px 0px;
     margin-top: 80px; 
-    background-color: #ffffff;
-    color: #343434;
+    flex-grow: 1;
+    display: flex;
 }
-
 .admin-container {
     display: flex;
     width: 100%;
-    height: 100vh; /* optional, biar full layar */
+    height: calc(100vh - 80px); /* Tinggi viewport dikurangi tinggi header */
 }
-
 /* KIRI (Sidebar admin) */
 .admin-features {
-    width: 20%;
-    background-color: #343434; /* warna latar sidebar */
+    width: 250px; /* Lebar tetap untuk sidebar */
+    flex-shrink: 0;
+    background-color: #343434;
     color: #ffffff;
     padding: 20px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .admin-profilebox {
@@ -153,26 +150,22 @@ footer {
     font-weight: bold;
 }
 
-
 /* KANAN (Konten utama) */
 .admin-content {
-    width: 80%;
-    padding: 20px;
-    background-color: #f4f4f4;
+    flex-grow: 1;
+    padding: 30px;
+    background-color: #f4f8fa;
     box-sizing: border-box;
-
-    /* Tambahan penting untuk scroll */
-    height: 100vh; /* tinggi tetap */
-    overflow-y: auto; /* agar bisa discroll */
+    overflow-y: auto; /* Scroll hanya pada konten kanan */
 }
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    padding: 20px;
-    background-color: #f4f4f4;
-    display: block;
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.tab-content h2 { 
+    font-size: 24px; 
+    color: #333; 
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
 }
 
 /* === BAGIAN NUMBERS === */
@@ -479,4 +472,92 @@ font-size:12px;
 .pagination .active{
     background-color: #e6f5ff;
     color:#343434
+}
+
+/* === Dashboard Specific === */
+.numbers-data {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.stat-card {
+    background-color: #0392FB;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.stat-info .stat-number { font-size: 28px; font-weight: bold; color: #ffffff; }
+.stat-info .stat-label { font-size: 14px; color: #ffffff; }
+.stat-icon img { width: auto; height: 48px; opacity: 1; }
+
+/* === Grafik === */
+.graph-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.graph-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+#visitor-period-filter { padding: 5px; border-radius: 5px; border: 1px solid #ccc; }
+
+/* === Tabel Generik === */
+.table-controls { margin-bottom: 15px; }
+.table-controls input {
+    padding: 8px 12px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.table-container { overflow-x: auto; }
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #50BDF5;
+}
+.data-table th, .data-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #50BDF5;
+    border: 1px solid #50BDF5;
+    text-align: left;
+    vertical-align: middle;
+}
+.data-table th { background-color: #0392FB; font-weight: bold; color: #ffffff; text-align: center; }
+.data-table tbody tr:hover { background-color: #f4f8fa; }
+.table-pict { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.action-btns .delete-icon { cursor: pointer; color: #e74c3c; }
+.role-switcher { padding: 5px; border-radius: 4px; border: 1px solid #ccc; }
+.status { padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; color: #fff; }
+.status.success { background-color: #2ecc71; }
+.status.pending { background-color: #f39c12; }
+.status.failed { background-color: #e74c3c; }
+
+/* === Setting Form === */
+.setting-form .form-group { margin-bottom: 15px; }
+.setting-form label { display: block; margin-bottom: 5px; font-weight: bold; }
+.setting-form input {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.setting-form button {
+    background-color: #0392FB;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
