@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // --- Deklarasi Variabel Global untuk Data & Grafik ---
     let allUsersData = [], allPTsData = [], allTransactionsData = [];
     let visitorChartInstance = null;
+    let incomeChartInstance = null; // Tambahkan ini
 
     // --- Fungsi Render Tampilan ---
     function renderTable(tbodyId, data, type) {
@@ -69,22 +70,40 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+        // --- Fungsi Render ---
     function renderChart(canvasId, period, type) {
+        // Panggil PHP dengan tipe yang benar
         fetch(`http://localhost/StrongU_Project/backend/get_chart_data.php?type=${type}&period=${period}`)
         .then(res => res.json())
         .then(data => {
             const ctx = document.getElementById(canvasId);
             if (!ctx) return;
+
+            // Tentukan instance chart mana yang akan di-update/dihancurkan
             let chartInstance = (type === 'visitor') ? visitorChartInstance : incomeChartInstance;
-            if(chartInstance) chartInstance.destroy();
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
 
             let datasets = [];
+            let yAxisOptions = {}; // Obyek untuk opsi sumbu Y dinamis
+
             if (type === 'visitor') {
                 datasets.push({
                     label: 'New Users', data: data.values, borderColor: '#0392FB',
                     backgroundColor: 'rgba(3, 146, 251, 0.1)', fill: true, tension: 0.4
                 });
-            } else { // Income
+                // Atur skala sumbu Y untuk Visitor
+                const maxVisitor = Math.max(...data.values);
+                yAxisOptions = {
+                    beginAtZero: true,
+                    // Jika data maksimal kecil, buat langkahnya 1
+                    ticks: {
+                        stepSize: maxVisitor < 10 ? 1 : undefined,
+                        precision: 0 // Tidak ada desimal
+                    }
+                };
+            } else { // type 'income'
                 datasets.push({
                     label: 'Total Income', data: data.income, borderColor: '#2ecc71',
                     backgroundColor: 'rgba(46, 204, 113, 0.1)', fill: true, tension: 0.4
@@ -93,16 +112,35 @@ document.addEventListener("DOMContentLoaded", function () {
                     label: 'Profit (Admin Fees)', data: data.profit, borderColor: '#f39c12',
                     backgroundColor: 'rgba(243, 156, 18, 0.1)', fill: true, tension: 0.4
                 });
+                // Atur format sumbu Y untuk Rupiah
+                yAxisOptions = {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value, index, values) {
+                            if (value >= 1000000) return 'Rp ' + value / 1000000 + ' Jt';
+                            if (value >= 1000) return 'Rp ' + value / 1000 + ' rb';
+                            return 'Rp ' + value;
+                        }
+                    }
+                };
             }
 
-            chartInstance = new Chart(ctx.getContext('2d'), {
+            // Buat instance chart baru
+            const newChart = new Chart(ctx.getContext('2d'), {
                 type: 'line',
                 data: { labels: data.labels, datasets: datasets },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // Penting agar chart mengisi wrapper
+                    scales: {
+                        y: yAxisOptions // Terapkan opsi sumbu Y dinamis di sini
+                    }
+                }
             });
 
-            if (type === 'visitor') visitorChartInstance = chartInstance;
-            else incomeChartInstance = chartInstance;
+            // Simpan instance baru
+            if (type === 'visitor') visitorChartInstance = newChart;
+            else incomeChartInstance = newChart;
         });
     }
 
@@ -200,7 +238,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Filter Grafik
     document.getElementById('visitor-period-filter').addEventListener('change', function() { renderChart('visitor-chart', this.value, 'visitor'); });
     document.getElementById('income-period-filter').addEventListener('change', function() { renderChart('income-chart', this.value, 'income'); });
-
 
     // Panggil Inisialisasi
     initializeDashboard();

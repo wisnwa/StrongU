@@ -52,14 +52,17 @@
                     <div class="graph-row">
                         <div class="graph-container">
                             <div class="graph-header">
-                                <h3>Visitors Growth</h3>
+                                <h3>New Users Growth</h3>
                                 <select id="visitor-period-filter" class="period-filter">
                                     <option value="7">Last 7 Days</option>
                                     <option value="30" selected>Last 30 Days</option>
                                 </select>
                             </div>
-                            <canvas id="visitor-chart"></canvas>
+                            <div class="chart-wrapper">
+                                <canvas id="visitor-chart"></canvas>
+                            </div>
                         </div>
+
                         <div class="graph-container">
                             <div class="graph-header">
                                 <h3>Income & Profit</h3>
@@ -68,7 +71,9 @@
                                     <option value="30" selected>Last 30 Days</option>
                                 </select>
                             </div>
-                            <canvas id="income-chart"></canvas>
+                            <div class="chart-wrapper">
+                                <canvas id="income-chart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
